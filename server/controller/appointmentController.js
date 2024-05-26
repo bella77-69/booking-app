@@ -1,17 +1,15 @@
 import * as  dbConn from "../config/db.config.js";
 
-export const getAllBookings = (req, res) => {
-    dbConn.query("SELECT * FROM appointments", (err, result) => {
-        if (err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving booking.",
-        });
-        } else {
-        res.send(result);
-        }
-    });
-    };
-
+export const getAllBookings = async (req, res) => {
+    try {
+      const [result] = await dbConn.promise().query('SELECT * FROM appointments');
+      res.json(result);
+    } catch (err) {
+      res.status(500).send({
+        message: err.message || 'Some error occurred while retrieving bookings.',
+      });
+    }
+  };
 export const getBookingById = (req, res) => {
     dbConn.query(
         `SELECT * FROM appointments WHERE id = ${req.params.id}`,
@@ -28,36 +26,40 @@ export const getBookingById = (req, res) => {
 };
 
 export const createBooking = (req, res) => {
-    const { name, email, phone, date, time, service, stylist } = req.body;
-    dbConn.query(
-        `INSERT INTO appointments (name, email, phone, date, time, service, stylist) VALUES ('${name}', '${email}', '${phone}', '${date}', '${time}', '${service}', '${stylist}')`,
-        (err, result) => {
+    const { user_id, description, appointment_date } = req.body;
+
+    // Use prepared statements to prevent SQL injection
+    const query = `INSERT INTO appointments (user_id, description, appointment_date) VALUES (?, ?, ?)`;
+    
+    dbConn.query(query, [user_id, description, appointment_date], (err, result) => {
         if (err) {
             res.status(500).send({
-            message: err.message || "Some error occurred while creating the booking.",
+                message: err.message || "Some error occurred while creating the booking.",
             });
         } else {
             res.send(result);
         }
-        }
-    );
-}
+    });
+};
+
 
 export const updateBooking = (req, res) => {
-    const { name, email, phone, date, time, service, stylist } = req.body;
-    dbConn.query(
-        `UPDATE appointments SET name = '${name}', email = '${email}', phone = '${phone}', date = '${date}', time = '${time}', service = '${service}', stylist = '${stylist}' WHERE id = ${req.params.id}`,
-        (err, result) => {
+    const { user_id, description, appointment_date } = req.body;
+
+    // Use prepared statements to prevent SQL injection
+    const query = `UPDATE appointments SET user_id = ?, description = ?, appointment_date = ? WHERE appointment_id = ?`;
+
+    dbConn.query(query, [user_id, description, appointment_date, req.params.id], (err, result) => {
         if (err) {
             res.status(500).send({
-            message: err.message || "Some error occurred while updating the booking.",
+                message: err.message || "Some error occurred while updating the booking.",
             });
         } else {
             res.send(result);
         }
-        }
-    );
-}
+    });
+};
+
 
 export const deleteBooking = (req, res) => {
     dbConn.query(

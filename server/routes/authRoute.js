@@ -3,13 +3,13 @@ import passport from "../middleware/passport.js";
 const router = express.Router();
 
 router.get("/login", async (req, res) => {
-  res.render("login");
+  res.send("login");
 });
 
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/appointment",
+    successRedirect: "/dashboard",
     failureRedirect: "/auth/login",
   })
 );
