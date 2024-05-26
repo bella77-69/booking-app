@@ -10,12 +10,15 @@ const localLogin = new LocalStrategy(
     usernameField: "uname",
     passwordField: "password",
   },
-  async (uname, password, done) => {
-    //check if user exists
-    const user = await getUserByEmailIdAndPassword(uname, password);
+  async (username, password, done) => {
+    // Check if user exists in databse
+    const user = await getUserByEmailIdAndPassword(username, password);
+    console.log("passport 13: " + user.username);
     return user
       ? done(null, user)
-      : done(null, false, { message: "Invalid username or password" });
+      : done(null, false, {
+          message: "Your login details are not valid. Please try again.",
+        });
   }
 );
 
@@ -25,7 +28,7 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(async function (id, done) {
-  const user = await getUserById(id);
+  const user = await getUserById(id.toString());
   if (user) {
     done(null, user);
   } else {

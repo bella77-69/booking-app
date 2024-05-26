@@ -1,5 +1,3 @@
-const { next, request, response } = require("express");
-
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
@@ -13,5 +11,6 @@ function forwardAuthenticated(req, res, next) {
     }
     res.redirect("/");
 }
+
 
 export { ensureAuthenticated, forwardAuthenticated };
