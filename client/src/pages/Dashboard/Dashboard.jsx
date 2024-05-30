@@ -1,44 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const Dashboard = () => {
-    const [appointments, setAppointments] = useState([]);
-    const [loading, setLoading] = useState(true);
+function Dashboard() {
+  const [appointments, setAppointments] = useState([]);
 
-    useEffect(() => {
-        axios.get('/appointment') // replace with your actual API endpoint
-            .then(response => {
-                setAppointments(response.data);
-                setLoading(false);
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-                setLoading(false);
-            });
-    }, []);
-
-    if (loading) {
-        return <p>Loading...</p>;
+  const handleLogout = async () => {
+    try {
+      // Clear user token or session on the client side
+      localStorage.removeItem("token"); 
+      // Redirect the user to the login page
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Handle logout failure
     }
+  };
 
-    console.log("Appointments:", appointments); // Log appointments to check its value
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get("http://localhost:8000/api/appointments", {
+       
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data)
+        setAppointments(response.data);
+      } catch (error) {
+        console.error("Failed to fetch appointments:", error);
+      
+      }
+    };
 
-    return (
-        <div>
-            <h1>dashboard page</h1>
-            <h2>Upcoming Appointments</h2>
-            {appointments.length > 0 ? (
-                appointments.map((appointment, index) => (
-                    <div key={index}>
-                        <p>{appointment.date} - {appointment.time}</p>
-                    </div>
-                ))
-            ) : (
-                <p>No appointments found</p>
-            )}
-            <button onClick={() => {/* code to book an appointment */}}>Book an Appointment</button>
-        </div>
-    );
-};
+    fetchAppointments();
+  }, []); 
+
+  return (
+    <div>
+      <h1>Welcome to Dashboard</h1>
+      <button onClick={handleLogout}>Logout</button>
+      <h2>Your Appointments:</h2>
+      <ul>
+        {appointments.map((appointment) => (
+          <ul key={appointment.id}>
+            <li>User Id:{appointment.user_id}</li>
+            <li>Description:{appointment.description}</li>
+            <li>Appointment Date:{appointment.appointment_date}</li>
+            <li>Appointment Id: {appointment.appointment_id}</li>
+          </ul>
+       
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default Dashboard;

@@ -1,3 +1,7 @@
+.footer {
+  padding: 20px;
+}
+
 .wrapper {
     padding-top: rem(80px);
     padding-bottom: rem(50px);

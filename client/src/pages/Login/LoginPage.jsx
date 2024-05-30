@@ -1,24 +1,14 @@
-import {
-  TextInput,
-  PasswordInput,
-  Checkbox,
-  Anchor,
-  Paper,
-  Title,
-  Text,
-  Container,
-  Group,
-  Button,
-} from "@mantine/core";
-import classes from "./LoginPage.module.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { Container, Title, Paper, TextInput, Button } from '@mantine/core';
+import classes from "./LoginPage.module.css";
 
-export default function LoginPage() {
+function Login() {
   const [state, setState] = useState({
-    uName: "",
+    email: "",
     password: "",
     successMessage: null,
+    errorMessage: null,
   });
 
   const handleChange = (e) => {
@@ -29,69 +19,87 @@ export default function LoginPage() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmitClick = async (e) => {
     e.preventDefault();
-    const data = {
-      uname: state.uName, // Updated to match your server's field names
-      password: state.password, // Updated to match your server's field names
-    };
+    const { email, password } = state;
 
-    axios
-      .post("http://localhost:5000/auth/login", data)
-      .then(function (response) {
-        if (response.status === 200) {
-          const id = response.data.user_id; // Extract user ID from the response (adjust this based on your server response)
+    setState((prevState) => ({
+      ...prevState,
+      successMessage: null,
+      errorMessage: null,
+    }));
 
-          setState((prevState) => ({
-            ...prevState,
-            successMessage:
-              "Login successful. Redirecting to dashboard page...",
-          }));
+    try {
+      const res = await axios.post(`http://localhost:8000/api/user/login`, {
+        email,
+        password,
+      });
 
-          // Redirect to the dashboard with the user's ID
-          // window.location.href = `/dashboard/${id}`;
-          window.location.href = `/dashboard`;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      if (res.data.result?.user) {
         setState((prevState) => ({
           ...prevState,
-          successMessage: "Login failed. Please check your credentials.",
+          user: res.data.result?.user,
+          successMessage: "Login successful. Redirecting to dashboard page...",
         }));
-      });
+        const id = res.data.result.user.id;
+        window.location.href = `/dashboard/${id}`;
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          errorMessage: "Login failed. Please check your credentials.",
+        }));
+      }
+    } catch (error) {
+      console.log(error);
+      setState((prevState) => ({
+        ...prevState,
+        errorMessage: "Login failed. Please check your credentials.",
+      }));
+    }
   };
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
         Welcome back!
       </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
-        Do not have an account yet?{" "}
-        <Anchor size="sm" component="button">
-          Create account
-        </Anchor>
-      </Text>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required  onChange={handleChange}/>
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          mt="md"
-          onChange={handleChange}
-        />
-        <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm">
-            Forgot password?
-          </Anchor>
-        </Group>
-        <Button fullWidth mt="xl" onClick={handleSubmit}>
-          Sign in
-        </Button>
+        <form>
+          <TextInput
+            label="Email"
+            placeholder="Enter email"
+            required
+            id="email"
+            value={state.email}
+            onChange={handleChange}
+          />
+          <TextInput
+            type="password"
+            label="Password"
+            placeholder="Password"
+            required
+            id="password"
+            value={state.password}
+            onChange={handleChange}
+          />
+          <Button
+            fullWidth
+            mt="xl"
+            onClick={handleSubmitClick}
+          >
+            Sign in
+          </Button>
+          {state.successMessage && (
+            <p>{state.successMessage}</p>
+          )}
+          {state.errorMessage && (
+            <p>{state.errorMessage}</p>
+          )}
+        </form>
       </Paper>
     </Container>
   );
 }
+
+export default Login;
