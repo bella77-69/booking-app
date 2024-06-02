@@ -44,3 +44,8 @@
     display: inline-block;
     color: light-dark(inherit, var(--mantine-color-white));
   }
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}

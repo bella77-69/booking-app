@@ -1,68 +1,72 @@
 import { Image, Text, Container, ThemeIcon, Title, SimpleGrid } from '@mantine/core';
-import IMAGES from '../../assets/images/main.jpg';
+import { Link } from 'react-router-dom'; // Import Link component
+import classicImage from '../../assets/images/classic.jpg';
+import hybridImage from '../../assets/images/hybrid.jpg';
+import volumeImage from '../../assets/images/volume.jpg';
+import liftImage from '../../assets/images/lift.jpg';
 import classes from './Welcome.module.css';
 
 const data = [
   {
-    image: 'classic Lashes',
+    image: classicImage,
     title: 'Classic Lashes',
-    src: '../../assets/images/classic.jpg',
     description: 'Classic Lashes are a single extension applied to a single natural lash',
+    link: '/classic-lashes',
   },
   {
-    image: 'Hybrid Lashes',
+    image: hybridImage,
     title: 'Hybrid Lashes',
-    description: 'Fans obsess over the particular length and angle of its arms',
+    description: 'Hybrid Lashes are a mix of Classic and Volume Lashes',
+    link: '/hybrid-lashes',
   },
   {
-    image: 'Volume Lashes',
+    image: volumeImage,
     title: 'Volume Lashes',
-    description: 'They divvy up their prey evenly among the members of their pack',
+    description: 'Volume Lashes are multiple extensions applied to a single natural lash',
+    link: '/volume-lashes',
   },
   {
-    image: 'Lash Lifts',
+    image: liftImage,
     title: 'Lash Lifts',
-    description: 'Phanpy uses its long nose to shower itself',
+    description: 'Lash lifts are a semi-permanent treatment that enhances your natural lashes',
+    link: '/lash-lifts', 
   },
 ];
 
 export function Welcome() {
   const items = data.map((item) => (
-    <div className={classes.item} key={item.image}>
-      <ThemeIcon variant="light" className={classes.itemIcon} size={60} radius="md">
-        <Image src={IMAGES[item.image]} />
-      </ThemeIcon>
-
-      <div>
-        <Text fw={700} fz="lg" className={classes.itemTitle}>
-          {item.title}
-        </Text>
-        <Text c="dimmed">{item.description}</Text>
+    <Link to={item.link} key={item.title} className={classes.link}> 
+      <div className={classes.item}>
+        <ThemeIcon variant="light" className={classes.itemIcon} size={60} radius="md">
+          <Image src={item.image} />
+        </ThemeIcon>
+        <div>
+          <Text fw={700} fz="lg" className={classes.itemTitle}>
+            {item.title}
+          </Text>
+          <Text c="dimmed">{item.description}</Text>
+        </div>
       </div>
-    </div>
+    </Link>
   ));
 
   return (
     <Container size={700} className={classes.wrapper}>
-      {/* <Text className={classes.supTitle}>Use cases</Text> */}
-
       <Title className={classes.title} order={2}>
-      Bella  Lashes Inc
+        Bella Lashes Inc
       </Title>
-
       <Container size={660} p={0}>
         <Text c="dimmed" className={classes.description}>
-        Longer, thicker and fuller Lashes! Bella Lashes Inc Eyelash
-              Extensions are a semi-permanent way of lengthening and thickening
-              your Natural Eyelashes without the need for mascara or curlers.
+          Longer, thicker and fuller Lashes! Bella Lashes Inc Eyelash
+          Extensions are a semi-permanent way of lengthening and thickening
+          your Natural Eyelashes without the need for mascara or curlers.
         </Text>
         <Text c="dimmed" className={classes.description}>
-            We offer a variety of lengths, thicknesses, and curls to create a customized look for each client. 
-            Our lash extensions are safe, comfortable, and long-lasting. 
-            They are perfect for everyday wear, special occasions, or for those who just want to wake up looking fabulous!
+          We offer a variety of lengths, thicknesses, and curls to create a customized look for each client. 
+          Our lash extensions are safe, comfortable, and long-lasting. 
+          They are perfect for everyday wear, special occasions, or for those who just want to wake up looking fabulous!
         </Text>
       </Container>
-
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing={50} mt={30}>
         {items}
       </SimpleGrid>

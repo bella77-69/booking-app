@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   HoverCard,
   Group,
@@ -35,6 +35,12 @@ import { ActionToggle } from '../ColorScheme/ActionToggle';
 export function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token); 
+  }, []); // Run once when component mounts
 
   const menuLinks = [
     { icon: IconCode, title: 'Home', description: 'Home Page', href: '/' },
@@ -60,8 +66,12 @@ export function Navbar() {
             {links}
           </Group>
           <Group visibleFrom="sm">
-            <Button component="a" href={loginHref} variant="default">Log in</Button>
-            <Button component="a" href={signupHref}>Sign up</Button>
+            {!isLoggedIn && ( 
+              <>
+                <Button component="a" href={loginHref} variant="default">Log in</Button>
+                <Button component="a" href={signupHref}>Sign up</Button>
+              </>
+            )}
             <ActionToggle />
           </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -86,8 +96,12 @@ export function Navbar() {
           ))}
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <Button component="a" href={loginHref} variant="default">Log in</Button>
-            <Button component="a" href={signupHref}>Sign up</Button>
+            {!isLoggedIn && ( // Conditionally render login and signup buttons
+              <>
+                <Button component="a" href={loginHref} variant="default">Log in</Button>
+                <Button component="a" href={signupHref}>Sign up</Button>
+              </>
+            )}
             <ActionToggle />
           </Group>
         </ScrollArea>

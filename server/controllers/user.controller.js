@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { verifyUser, findUserById } = require('../models/user.model');
+const { verifyUser, findUserById, createUser, getAllUsers } = require('../models/user.model');
 
 const parseToken = (authHeader, res) => {
   if (!authHeader) {
@@ -40,7 +40,39 @@ const validateUser = async (req, res) => {
   }
 };
 
+const registerUser = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const newUser = await createUser(username, email, password);
+    res.status(201).json({ result: newUser });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.status(200).json({ result: users });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await findUserById(id);
+    res.status(200).json({ result: user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   loginUser,
   validateUser,
+  registerUser,
+  getUsers,
+  getUserById,
 };
