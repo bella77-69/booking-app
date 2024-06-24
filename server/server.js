@@ -4,6 +4,7 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/users.routes');
 const appointmentRoutes = require('./routes/appointment.route');
+const bookingRoutes = require('./routes/booking.route');
 // const postRoutes = require('./routes/post.routes');
 
 const port = 8000;
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/user', userRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/booking', bookingRoutes);
 // app.use('/api/posts', postRoutes);
 
 app.listen(port, () => console.log(`Server is running on ${port}`));
