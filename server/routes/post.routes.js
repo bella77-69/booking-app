@@ -1,4 +1,3 @@
-// postRoutes.js
 const express = require('express');
 const { getPosts, getPostById, createPost, updatePost } = require('../controllers/post.controller');
 const router = express.Router();

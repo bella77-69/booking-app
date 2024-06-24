@@ -40,7 +40,12 @@ export function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token); 
-  }, []); // Run once when component mounts
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+  };
 
   const menuLinks = [
     { icon: IconCode, title: 'Home', description: 'Home Page', href: '/' },
@@ -66,11 +71,13 @@ export function Navbar() {
             {links}
           </Group>
           <Group visibleFrom="sm">
-            {!isLoggedIn && ( 
+            {!isLoggedIn ? (
               <>
                 <Button component="a" href={loginHref} variant="default">Log in</Button>
                 <Button component="a" href={signupHref}>Sign up</Button>
               </>
+            ) : (
+              <Button onClick={logout} variant="default">Log out</Button>
             )}
             <ActionToggle />
           </Group>
@@ -96,11 +103,13 @@ export function Navbar() {
           ))}
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            {!isLoggedIn && ( // Conditionally render login and signup buttons
+            {!isLoggedIn ? (
               <>
                 <Button component="a" href={loginHref} variant="default">Log in</Button>
                 <Button component="a" href={signupHref}>Sign up</Button>
               </>
+            ) : (
+              <Button onClick={logout} variant="default">Log out</Button>
             )}
             <ActionToggle />
           </Group>

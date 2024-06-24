@@ -9,6 +9,8 @@ import AboutUs from "./pages/About/AboutUs";
 import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
+import BookAppointment from "./pages/Dashboard/BookAppointment";
+import UpdateAppointment from './pages/Dashboard/UpdateAppointment'
 
 function App() {
   return (
@@ -21,6 +23,10 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
 
           <Route path="/dashboard/:id" exact element={<Dashboard />} />
+          <Route path="/book-appointment/:id" element={<BookAppointment />} />
+          <Route path="/update-appointment/:id" element={<UpdateAppointment />} />
+          <Route path="/delete-appointment/:id" element={<Dashboard />} />
+         
         </Routes>
         <Footer />
       </BrowserRouter>

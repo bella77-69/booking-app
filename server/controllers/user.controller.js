@@ -3,7 +3,7 @@ const { verifyUser, findUserById, createUser, getAllUsers } = require('../models
 
 const parseToken = (authHeader, res) => {
   if (!authHeader) {
-    res.status(403).send('Header does not exist');
+    res.status(403).send('Authorization header does not exist');
     return '';
   }
   return authHeader.split(' ')[1];
@@ -31,9 +31,17 @@ const validateUser = async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     const token = parseToken(authHeader, res);
+    if (!token) {
+      return res.status(403).json({ error: 'Token is missing' });
+    }
+
     const secretKey = process.env.SECRET_KEY;
     const decodedUser = jwt.verify(token, secretKey);
     const user = await findUserById(decodedUser.id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     res.json({ result: { user, token } });
   } catch (error) {
     res.status(401).json({ error: error.message });
@@ -63,6 +71,9 @@ const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await findUserById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
     res.status(200).json({ result: user });
   } catch (error) {
     res.status(400).json({ error: error.message });

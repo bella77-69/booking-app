@@ -36,13 +36,18 @@ function Login() {
       });
 
       if (res.data.result?.user) {
+        const { user, token } = res.data.result;
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("token", token); // Store token in local storage
+        
         setState((prevState) => ({
           ...prevState,
-          user: res.data.result?.user,
           successMessage: "Login successful. Redirecting to dashboard page...",
+          email: "", // Clear email input
+          password: "", // Clear password input
         }));
-        const id = res.data.result.user.id;
-        window.location.href = `/dashboard/${id}`;
+        
+        window.location.href = `/dashboard/${user.id}`;
       } else {
         setState((prevState) => ({
           ...prevState,
@@ -50,7 +55,7 @@ function Login() {
         }));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setState((prevState) => ({
         ...prevState,
         errorMessage: "Login failed. Please check your credentials.",
