@@ -37,17 +37,17 @@ function Login() {
 
       if (res.data.result?.user) {
         const { user, token } = res.data.result;
-        localStorage.setItem("userId", user.id);
-        localStorage.setItem("token", token); // Store token in local storage
+        localStorage.setItem("userId", user.userId);
+        localStorage.setItem("token", token);
         
         setState((prevState) => ({
           ...prevState,
           successMessage: "Login successful. Redirecting to dashboard page...",
-          email: "", // Clear email input
-          password: "", // Clear password input
+          email: "", 
+          password: "",
         }));
         
-        window.location.href = `/dashboard/${user.id}`;
+        window.location.href = `/dashboard/${user.userId}`;
       } else {
         setState((prevState) => ({
           ...prevState,

@@ -6,10 +6,10 @@ const getAllAppointments = async () => {
   return rows;
 };
 
-const findAppointmentById = async (appointmentId) => {
+const findAppointmentById = async (id) => {
   const [rows] = await db.execute(
-    "SELECT * FROM appointments WHERE appointmentID = ?",
-    [appointmentId]
+    "SELECT * FROM appointments WHERE id = ?",
+    [id]
   );
   if (rows.length === 0) throw new Error("Appointment not found");
   return rows[0];
@@ -37,7 +37,7 @@ const addAppointment = async (userId, appointmentDate, status, serviceId) => {
 };
 
 const updateAppointment = async (
-  appointmentId,
+  id,
   userId,
   appointmentDate,
   status,
@@ -45,17 +45,17 @@ const updateAppointment = async (
 ) => {
   const formattedDate = moment(appointmentDate).format("YYYY-MM-DD HH:mm:ss");
   const [result] = await db.execute(
-    "UPDATE appointments SET userId = ?, appointmentDate = ?, status = ?, serviceId = ? WHERE appointmentId = ?",
-    [userId, formattedDate, status, serviceId, appointmentId]
+    "UPDATE appointments SET userId = ?, appointmentDate = ?, status = ?, serviceId = ? WHERE id = ?",
+    [userId, formattedDate, status, serviceId, id]
   );
   if (result.affectedRows === 0) throw new Error("Appointment not found");
-  return { appointmentId };
+  return { id };
 };
 
-const deleteAppointment = async (appointmentId) => {
+const deleteAppointment = async (id) => {
   const [result] = await db.execute(
-    "DELETE FROM appointments WHERE appointmentId = ?",
-    [appointmentId]
+    "DELETE FROM appointments WHERE id = ?",
+    [id]
   );
   if (result.affectedRows === 0) throw new Error("Appointment not found");
 };

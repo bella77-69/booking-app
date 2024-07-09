@@ -74,7 +74,7 @@ const createAppointment = async (req, res) => {
     }
 
     // Call model function to create appointment
-    const { appointmentId } = await addAppointment(
+    const { id } = await addAppointment(
       userId,
       appointmentDate,
       status,
@@ -83,7 +83,7 @@ const createAppointment = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Appointment created successfully", appointmentId });
+      .json({ message: "Appointment created successfully", id });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -91,11 +91,11 @@ const createAppointment = async (req, res) => {
 
 const updateAppointmentController = async (req, res) => {
   try {
-    const { appointmentId } = req.params;
+    const { id } = req.params;
     const { userId, appointmentDate, status, serviceId } = req.body;
 
     const updatedAppointment = await updateAppointment(
-      appointmentId,
+      id,
       userId,
       appointmentDate,
       status,

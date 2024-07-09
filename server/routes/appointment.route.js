@@ -13,7 +13,7 @@ router.get("/", getAppointment);
 router.get("/:id", getAppointmentById);
 router.get("/user/:userId", getAppointmentsByUserId);
 router.post("/create", createAppointment);
-router.put("/:appointmentId", updateAppointmentController);
+router.put("/:id", updateAppointmentController);
 router.delete("/:id", deleteAppointmentController);
 
 module.exports = router;

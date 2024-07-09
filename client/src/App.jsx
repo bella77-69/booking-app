@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/dashboard/:id" exact element={<Dashboard />} />
+          <Route path="/dashboard/:userId" exact element={<Dashboard />} />
           <Route path="/book-appointment/:id" element={<BookAppointment />} />
           <Route path="/update-appointment/:id" element={<UpdateAppointment />} />
           <Route path="/delete-appointment/:id" element={<Dashboard />} />

@@ -82,10 +82,10 @@ function Dashboard() {
           {appointments.map((appointment, index) => (
             <Card key={index} size={700} className={classes.card}>
               <Paper style={{ marginBottom: "15px", padding: "15px" }}>
-                <Text>Status: {appointment.description}</Text>
+                <Text>Service: {appointment.serviceId}</Text>
                 <Text>
                   Date:{" "}
-                  {new Date(appointment.appointment_date).toLocaleString()}
+                  {new Date(appointment.appointmentDate).toLocaleString()}
                 </Text>
                 <Text>Status: {appointment.status}</Text>
                 <Button
