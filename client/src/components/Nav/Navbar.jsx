@@ -51,7 +51,6 @@ export function Navbar() {
     { icon: IconCode, title: 'Home', description: 'Home Page', href: '/' },
     { icon: IconCoin, title: 'About Us', description: 'About Us Page', href: '/about' },
     { icon: IconBook, title: 'Services', description: 'Services Page', href: '/services' },
-    { icon: IconFingerprint, title: 'Booking', description: 'Booking Page', href: '/booking' },
   ];
 
   const links = menuLinks.map((link) => (

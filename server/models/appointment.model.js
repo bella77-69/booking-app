@@ -1,46 +1,63 @@
-const db = require('../config/db.config');
+const db = require("../config/db.config");
+const moment = require("moment");
 
 const getAllAppointments = async () => {
-  const [rows] = await db.execute('SELECT * FROM appointments');
+  const [rows] = await db.execute("SELECT * FROM appointments");
   return rows;
 };
 
-const findAppointmentById = async (id) => {
-  const [rows] = await db.execute('SELECT * FROM appointments WHERE id = ?', [id]);
-  if (rows.length === 0) throw new Error('Appointment not found');
+const findAppointmentById = async (appointmentId) => {
+  const [rows] = await db.execute(
+    "SELECT * FROM appointments WHERE appointmentID = ?",
+    [appointmentId]
+  );
+  if (rows.length === 0) throw new Error("Appointment not found");
   return rows[0];
 };
 
 const getAppointmentsForUser = async (userId) => {
-  const [rows] = await db.execute('SELECT * FROM appointments WHERE user_id = ?', [userId]);
+  const [rows] = await db.execute(
+    "SELECT * FROM appointments WHERE userID = ?",
+    [userId]
+  );
   return rows;
 };
 
-const addAppointment = async (appointment) => {
-  const { description, appointment_date, user_id, status } = appointment;
+const addAppointment = async (userId, appointmentDate, status, serviceId) => {
+  try {
+    const [result] = await db.execute(
+      "INSERT INTO appointments (userId, appointmentDate, status, serviceId) VALUES (?, ?, ?, ?)",
+      [userId, appointmentDate, status, serviceId]
+    );
+
+    return { appointmentID: result.insertId };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const updateAppointment = async (
+  appointmentId,
+  userId,
+  appointmentDate,
+  status,
+  serviceId
+) => {
+  const formattedDate = moment(appointmentDate).format("YYYY-MM-DD HH:mm:ss");
   const [result] = await db.execute(
-    'INSERT INTO appointments (description, appointment_date, user_id, status) VALUES (?, ?, ?, ?)',
-    [description, appointment_date, user_id, status]
+    "UPDATE appointments SET userId = ?, appointmentDate = ?, status = ?, serviceId = ? WHERE appointmentId = ?",
+    [userId, formattedDate, status, serviceId, appointmentId]
   );
-  return {
-    id: result.insertId,
-    description,
-    appointment_date,
-    user_id,
-    status,
-  };
+  if (result.affectedRows === 0) throw new Error("Appointment not found");
+  return { appointmentId };
 };
 
-const updateAppointment = async (id, appointment) => {
-  const { description, appointment_date } = appointment;
-  await db.execute(
-    'UPDATE appointments SET description = ?, appointment_date = ? WHERE id = ?',
-    [description, appointment_date, id]
+const deleteAppointment = async (appointmentId) => {
+  const [result] = await db.execute(
+    "DELETE FROM appointments WHERE appointmentId = ?",
+    [appointmentId]
   );
-};
-
-const deleteAppointment = async (id) => {
-  await db.execute('DELETE FROM appointments WHERE id = ?', [id]);
+  if (result.affectedRows === 0) throw new Error("Appointment not found");
 };
 
 module.exports = {
@@ -51,4 +68,3 @@ module.exports = {
   updateAppointment,
   deleteAppointment,
 };
-
