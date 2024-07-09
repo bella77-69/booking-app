@@ -7,8 +7,9 @@ function UpdateAppointment() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [appointment, setAppointment] = useState({
-    description: '',
-    appointment_date: ''
+    status: '',
+    appointmentDate: ''
+
   });
 
   useEffect(() => {
@@ -63,9 +64,9 @@ function UpdateAppointment() {
       <Text align="center" size="xl">Update Appointment</Text>
       <form onSubmit={handleSubmit}>
         <TextInput
-          label="Description"
-          name="description"
-          value={appointment.description || ''}
+          label="Status"
+          name="status"
+          value={appointment.status || ''}
           onChange={handleChange}
           required
           fullwidth="true" 
@@ -73,14 +74,15 @@ function UpdateAppointment() {
         />
         <TextInput
           label="Appointment Date"
-          type="date"
-          name="appointment_date"
-          value={appointment.appointment_date || ''}
+          type="datetime-local"
+          name="appointmentDate"
+          value={appointment.appointmentDate || ''}
           onChange={handleChange}
           required
           fullwidth="true" 
           style={{ marginBottom: '20px' }}
         />
+    
         <Button
           type="submit"
           fullwidth="true" 

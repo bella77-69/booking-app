@@ -38,15 +38,15 @@ const addAppointment = async (userId, appointmentDate, status, serviceId) => {
 
 const updateAppointment = async (
   id,
-  userId,
+
   appointmentDate,
   status,
-  serviceId
+
 ) => {
   const formattedDate = moment(appointmentDate).format("YYYY-MM-DD HH:mm:ss");
   const [result] = await db.execute(
-    "UPDATE appointments SET userId = ?, appointmentDate = ?, status = ?, serviceId = ? WHERE id = ?",
-    [userId, formattedDate, status, serviceId, id]
+    "UPDATE appointments SET  appointmentDate = ?, status = ? WHERE id = ?",
+    [ formattedDate, status, id]
   );
   if (result.affectedRows === 0) throw new Error("Appointment not found");
   return { id };

@@ -92,14 +92,12 @@ const createAppointment = async (req, res) => {
 const updateAppointmentController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId, appointmentDate, status, serviceId } = req.body;
+    const { appointmentDate, status } = req.body;
 
     const updatedAppointment = await updateAppointment(
       id,
-      userId,
       appointmentDate,
       status,
-      serviceId
     );
 
     res
