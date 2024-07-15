@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Card, Text, Button, Container, Title, Paper } from "@mantine/core";
 import classes from "./dashboard.module.css";
 
+
 function Dashboard() {
-  const [appointments, setAppointments] = React.useState([]);
+  const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("userId");
+        const user_id = localStorage.getItem("userId");
+        
         const response = await axios.get(
-          `http://localhost:8000/api/appointments/user/${userId}`,
+          `http://localhost:8000/api/appointments/user/${user_id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -22,18 +24,19 @@ function Dashboard() {
           }
         );
         setAppointments(response.data.appointments);
-        console.log(response.data.appointments);
+        console.log('Appointments data:', response.data.appointments); // Log the data
       } catch (error) {
         console.error("Failed to fetch appointments:", error);
       }
     };
-
+  
     fetchAppointments();
   }, []);
+  
 
   const handleBookAppointment = () => {
-    const userId = localStorage.getItem("userId");
-    navigate(`/book-appointment/${userId}`);
+    const user_id = localStorage.getItem("userId");
+    navigate(`/book-appointment/${user_id}`);
   };
 
   const handleUpdateAppointment = (id) => {
@@ -41,27 +44,10 @@ function Dashboard() {
   };
 
   const handleDeleteAppointment = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this appointment?"
-    );
-    if (!confirmDelete) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:8000/api/appointments/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setAppointments((prevAppointments) =>
-        prevAppointments.filter((appointment) => appointment.id !== id)
-      );
-      console.log(`Appointment with id ${id} deleted`);
-    } catch (error) {
-      console.error("Failed to delete appointment:", error);
-    }
+    const user_id = localStorage.getItem("userId");
+    navigate(`/delete-appointment/${user_id}`);
   };
-
+  
   return (
     <Container size={700} className={classes.wrapper}>
       <Title order={1}>Welcome to Dashboard</Title>
@@ -78,14 +64,19 @@ function Dashboard() {
 
       {appointments.length > 0 && (
         <div>
-          <h2>Your Appointments:</h2>
+          <h2>Upcoming Appointments:</h2>
           {appointments.map((appointment, index) => (
             <Card key={index} size={700} className={classes.card}>
               <Paper style={{ marginBottom: "15px", padding: "15px" }}>
-                <Text>Service: {appointment.serviceId}</Text>
+              <Text>Service: {appointment.service_name}</Text>
+                <Text>Price: {appointment.service_price}</Text>
+                <Text>Duration: {appointment.service_duration}</Text>
+                <Text>Description: {appointment.description}</Text>
+                <Text>User: {appointment.user_name}</Text>
+                <Text>Email: {appointment.user_email}</Text>
                 <Text>
                   Date:{" "}
-                  {new Date(appointment.appointmentDate).toLocaleString()}
+                  {new Date(appointment.appointment_date).toLocaleString()}
                 </Text>
                 <Text>Status: {appointment.status}</Text>
                 <Button
@@ -96,14 +87,14 @@ function Dashboard() {
                   onClick={() => handleUpdateAppointment(appointment.id)}
                   style={{ marginTop: "10px" }}
                 >
-                  Update Appointment
+                 Update Details
                 </Button>
                 <Button
                   fullWidth
                   variant="default"
                   radius="xl"
                   size="md"
-                  onClick={() => handleDeleteAppointment(appointment.id)}
+                  onClick={() => handleDeleteAppointment(appointment.user_id)}
                   style={{ marginTop: "10px" }}
                 >
                   Delete Appointment

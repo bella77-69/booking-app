@@ -8,8 +8,9 @@ import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
-import UpdateAppointment from './pages/Dashboard/UpdateAppointment'
-
+import DeleteAppointment from './pages/Dashboard/DeleteAppointment'
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import UpdateAppointment from './pages/Admin/UpdateAppointment'
 
 function App() {
   return (
@@ -21,9 +22,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
 
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
+          <Route path="/admin-dashboard/:userId" exact element={<AdminDashboard />} />
+          <Route path="/admin/update-appointment/:id" element={<UpdateAppointment />} />
           <Route path="/book-appointment/:id" element={<BookAppointment />} />
-          <Route path="/update-appointment/:id" element={<UpdateAppointment />} />
-          <Route path="/delete-appointment/:id" element={<Dashboard />} />
+         
+          <Route path="/delete-appointment/:id" element={<DeleteAppointment />} />
          
         </Routes>
         <Footer />

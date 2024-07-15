@@ -6,6 +6,8 @@ const userRoutes = require('./routes/users.routes');
 const appointmentRoutes = require('./routes/appointment.route');
 const bookingRoutes = require('./routes/booking.route');
 const timesRoutes = require('./routes/times.routes');
+const serviceRoutes = require('./routes/services.route');
+const adminRoutes = require('./routes/admin.route');
 // const postRoutes = require('./routes/post.routes');
 
 const port = 8000;
@@ -20,6 +22,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/booking', bookingRoutes);
 app.use('/api/times', timesRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/admin', adminRoutes);
 // app.use('/api/posts', postRoutes);
 
 app.listen(port, () => console.log(`Server is running on ${port}`));

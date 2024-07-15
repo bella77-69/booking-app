@@ -37,14 +37,14 @@ const getAppointmentById = async (req, res) => {
 
 const getAppointmentsByUserId = async (req, res) => {
   try {
-    const userId = parseInt(req.params.userId, 10);
-    if (isNaN(userId)) {
+    const user_id = parseInt(req.params.user_id, 10);
+    if (isNaN(user_id)) {
       throw new Error("Invalid user ID");
     }
 
-    const appointments = await getAppointmentsForUser(userId);
+    const appointments = await getAppointmentsForUser(user_id);
     res.json({
-      userId,
+      user_id,
       appointments,
     });
   } catch (error) {
@@ -60,56 +60,60 @@ const parseToken = (authHeader, res) => {
   return authHeader.split(" ")[1];
 };
 
+// const createAppointment = async (userId, appointmentDate, serviceName, serviceDuration, servicePrice, serviceDescription) => {
+//   try {
+//     const query = `
+//       INSERT INTO appointments (userId, appointmentDate, status, createdAt, serviceName, serviceDuration, servicePrice, serviceDescription)
+//       VALUES (?, ?, 'available', CURRENT_TIMESTAMP, ?, ?, ?, ?)
+//     `;
+//     const values = [userId, appointmentDate, serviceName, serviceDuration, servicePrice, serviceDescription];
+//     await db.execute(query, values);
+//     return true; // or return the inserted appointment ID or success message
+//   } catch (error) {
+//     console.error('Error creating appointment:', error);
+//     throw error;
+//   }
+// };
+
 const createAppointment = async (req, res) => {
   try {
-    const { userId, appointmentDate, status, serviceId } = req.body;
+    const { user_id, appointment_date, service_id } = req.body;
+    const status = 'Scheduled'; // Default status
 
-    // Ensure required fields are present
-    if (!userId || !appointmentDate || !status || !serviceId) {
-      return res
-        .status(400)
-        .json({
-          error: "userId, appointmentDate, status, and serviceId are required.",
-        });
-    }
+    // Call the model function
+    const newAppointment = await addAppointment(user_id, appointment_date, status, service_id);
 
-    // Call model function to create appointment
-    const { id } = await addAppointment(
-      userId,
-      appointmentDate,
-      status,
-      serviceId
-    );
-
-    res
-      .status(201)
-      .json({ message: "Appointment created successfully", id });
+    res.status(201).json({ message: "Appointment created successfully", newAppointment });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Error creating appointment:', error);
+    res.status(500).json({ error: error.message });
   }
 };
+
 
 const updateAppointmentController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { appointmentDate, status } = req.body;
+    const { appointmentDate, status, serviceName, serviceDuration, servicePrice} = req.body;
 
     const updatedAppointment = await updateAppointment(
       id,
       appointmentDate,
       status,
+      serviceName,
+      serviceDuration,
+      servicePrice,
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Appointment updated successfully",
-        updatedAppointment,
-      });
+    res.status(200).json({
+      message: "Appointment updated successfully",
+      updatedAppointment,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 const deleteAppointmentController = async (req, res) => {
   try {

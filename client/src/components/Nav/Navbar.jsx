@@ -45,6 +45,7 @@ export function Navbar() {
   const logout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    window.location.href = "/login";
   };
 
   const menuLinks = [
