@@ -8,7 +8,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
-import DeleteAppointment from './pages/Dashboard/DeleteAppointment'
+import DeleteAppointment from './pages/Admin/DeleteAppointment'
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UpdateAppointment from './pages/Admin/UpdateAppointment'
 

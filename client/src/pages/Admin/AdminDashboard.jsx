@@ -37,6 +37,10 @@ const AdminDashboard = () => {
     navigate(`/admin/update-appointment/${appointment_id}`)
     };
 
+    const adminDeleteAppointment = async (appointment_id) => {
+        navigate(`/delete-appointment/${appointment_id}`)
+        };
+
   return (
     <Container size={700}>
       <Title order={1}>Admin Dashboard</Title>
@@ -68,6 +72,14 @@ const AdminDashboard = () => {
                 style={{ marginTop: "20px" }}
 
                 >Update</Button>
+                <Button
+                fullWidth
+                variant="default"
+                radius="xl"
+                size="md"
+                onClick={() => adminDeleteAppointment(appointments.appointment_id)}
+                style={{ marginTop: "20px" }}
+                >Delete</Button>
               </Paper>
             </Card>
           ))}

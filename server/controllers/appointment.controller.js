@@ -91,28 +91,36 @@ const createAppointment = async (req, res) => {
 };
 
 
+const allowedStatuses = ['Scheduled', ,'Confirmed', 'Completed', 'Cancelled'];
+
 const updateAppointmentController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { appointmentDate, status, serviceName, serviceDuration, servicePrice} = req.body;
+    try {
+        const { id } = req.params;
+        const { user_id, service_id, appointment_date, status } = req.body;
 
-    const updatedAppointment = await updateAppointment(
-      id,
-      appointmentDate,
-      status,
-      serviceName,
-      serviceDuration,
-      servicePrice,
-    );
+        // Validate input
+        if (!user_id || !service_id || !appointment_date || !status) {
+            return res.status(400).send('All fields are required');
+        }
 
-    res.status(200).json({
-      message: "Appointment updated successfully",
-      updatedAppointment,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).send('Invalid status value');
+        }
+
+        // Update the appointment details in the database
+        const result = await updateAppointment(id, { user_id, service_id, appointment_date, status });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).send('Appointment not found');
+        }
+
+        res.status(200).send('Appointment updated successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred while updating the appointment');
+    }
 };
+
 
 
 const deleteAppointmentController = async (req, res) => {

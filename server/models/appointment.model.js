@@ -99,16 +99,31 @@ const addAppointment = async (user_id, appointment_date, status, service_id) => 
 };
 
 
-const updateAppointment = async (id, appointmentDate, status, serviceName, serviceDuration, servicePrice) => {
-  const formattedDate = moment(appointmentDate).format("YYYY-MM-DD HH:mm:ss");
-  const [result] = await db.execute(
-    "UPDATE appointments SET appointmentDate = ?, status = ?, serviceName = ?, serviceDuration = ?, servicePrice = ? WHERE id = ?",
-    [formattedDate, status, serviceName, serviceDuration, servicePrice, id]
-  );
-  if (result.affectedRows === 0) throw new Error("Appointment not found");
-  return { id };
-};
+// const updateAppointment = async (id, appointmentDate, status, serviceName, serviceDuration, servicePrice) => {
+//   const formattedDate = moment(appointmentDate).format("YYYY-MM-DD HH:mm:ss");
+//   const [result] = await db.execute(
+//     "UPDATE appointments SET appointmentDate = ?, status = ?, serviceName = ?, serviceDuration = ?, servicePrice = ? WHERE id = ?",
+//     [formattedDate, status, serviceName, serviceDuration, servicePrice, id]
+//   );
+//   if (result.affectedRows === 0) throw new Error("Appointment not found");
+//   return { id };
+// };
 
+const updateAppointment = async (id, details) => {
+  const { user_id, service_id, appointment_date, status } = details;
+  const [result] = await db.execute(`
+      UPDATE appointments
+      SET 
+          user_id = ?,
+          service_id = ?,
+          appointment_date = ?,
+          status = ?,
+          updated_at = NOW()
+      WHERE id = ?
+  `, [user_id, service_id, appointment_date, status, id]);
+
+  return result;
+};
 
 const deleteAppointment = async (id) => {
   const [result] = await db.execute(

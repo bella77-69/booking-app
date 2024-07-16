@@ -3,6 +3,7 @@ const {
   getAllAppointments,
 } = require("../models/admin.model");
 
+
 const getAppointment = async (req, res) => {
   try {
     const appointments = await getAllAppointments();
@@ -11,7 +12,6 @@ const getAppointment = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAppointment,

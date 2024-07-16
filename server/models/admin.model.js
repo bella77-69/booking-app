@@ -1,5 +1,5 @@
 const db = require("../config/db.config");
-const moment = require("moment");
+
 
 const getAllAppointments = async () => {
     const [rows] = await db.execute(`
@@ -20,9 +20,6 @@ const getAllAppointments = async () => {
     `);
     return rows;
 };
-
-
-
 
 // const findAppointmentById = async (id) => {
 //   const query = `
