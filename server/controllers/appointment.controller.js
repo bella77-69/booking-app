@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const {
   getAllAppointments,
   findAppointmentById,
@@ -60,68 +59,68 @@ const parseToken = (authHeader, res) => {
   return authHeader.split(" ")[1];
 };
 
-// const createAppointment = async (userId, appointmentDate, serviceName, serviceDuration, servicePrice, serviceDescription) => {
-//   try {
-//     const query = `
-//       INSERT INTO appointments (userId, appointmentDate, status, createdAt, serviceName, serviceDuration, servicePrice, serviceDescription)
-//       VALUES (?, ?, 'available', CURRENT_TIMESTAMP, ?, ?, ?, ?)
-//     `;
-//     const values = [userId, appointmentDate, serviceName, serviceDuration, servicePrice, serviceDescription];
-//     await db.execute(query, values);
-//     return true; // or return the inserted appointment ID or success message
-//   } catch (error) {
-//     console.error('Error creating appointment:', error);
-//     throw error;
-//   }
-// };
-
 const createAppointment = async (req, res) => {
   try {
     const { user_id, appointment_date, service_id } = req.body;
-    const status = 'Scheduled'; // Default status
+    const status = "Scheduled"; // Default status
 
     // Call the model function
-    const newAppointment = await addAppointment(user_id, appointment_date, status, service_id);
+    const newAppointment = await addAppointment(
+      user_id,
+      appointment_date,
+      status,
+      service_id
+    );
 
-    res.status(201).json({ message: "Appointment created successfully", newAppointment });
+    res
+      .status(201)
+      .json({ message: "Appointment created successfully", newAppointment });
   } catch (error) {
-    console.error('Error creating appointment:', error);
+    console.error("Error creating appointment:", error);
     res.status(500).json({ error: error.message });
   }
 };
 
-
-const allowedStatuses = ['Scheduled', ,'Confirmed', 'Completed', 'Cancelled'];
+const allowedStatuses = ["Scheduled", "Confirmed", "Completed", "Cancelled"];
 
 const updateAppointmentController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { user_id, service_id, appointment_date, status } = req.body;
+  try {
+    const { id } = req.params;
+    const { user_id, service_id, appointment_date, status } = req.body;
 
-        // Validate input
-        if (!user_id || !service_id || !appointment_date || !status) {
-            return res.status(400).send('All fields are required');
-        }
-
-        if (!allowedStatuses.includes(status)) {
-            return res.status(400).send('Invalid status value');
-        }
-
-        // Update the appointment details in the database
-        const result = await updateAppointment(id, { user_id, service_id, appointment_date, status });
-
-        if (result.affectedRows === 0) {
-            return res.status(404).send('Appointment not found');
-        }
-
-        res.status(200).send('Appointment updated successfully');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('An error occurred while updating the appointment');
+    // Validate input
+    if (!user_id || !service_id || !appointment_date || !status) {
+      return res.status(400).send("All fields are required");
     }
+
+    if (!allowedStatuses.includes(status)) {
+      return res.status(400).send("Invalid status value");
+    }
+
+    // Update the appointment details in the database
+    const result = await updateAppointment(id, {
+      user_id,
+      service_id,
+      appointment_date,
+      status,
+    });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Appointment not found");
+    }
+
+    // Fetch the updated appointment details
+    const updatedAppointment = await getAppointmentsForUser(id);
+
+    res.status(200).json({
+      message: "Appointment updated successfully",
+      appointment: updatedAppointment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while updating the appointment");
+  }
 };
-
-
 
 const deleteAppointmentController = async (req, res) => {
   try {

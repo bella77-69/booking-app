@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     };
 
     const adminDeleteAppointment = async (appointment_id) => {
-        navigate(`/delete-appointment/${appointment_id}`)
+        navigate(`/admin/delete-appointment/${appointment_id}`)
         };
 
   return (

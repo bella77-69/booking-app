@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const {
   getAllAppointments,
 } = require("../models/admin.model");

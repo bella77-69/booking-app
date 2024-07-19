@@ -21,39 +21,6 @@ const getAllAppointments = async () => {
     return rows;
 };
 
-// const findAppointmentById = async (id) => {
-//   const query = `
-//     SELECT 
-//       a.appointment_id,
-//       a.user_id,
-//       u.username,
-//       s.service_name,
-//       s.service_price,
-//       s.service_duration,
-//       a.appointment_date,
-//       a.status
-//     FROM 
-//       Appointments a
-//     JOIN 
-//       Users u ON a.user_id = u.user_id
-//     JOIN 
-//       Services s ON a.service_id = s.service_id
-//     WHERE a.appointment_id = ?
-//   `;
-//   const [rows] = await db.execute(query, [id]);
-//   if (rows.length === 0) throw new Error("Appointment not found");
-//   return rows[0];
-// };
-
-// const getAppointmentsForUser = async (user_id) => {
-//   const [rows] = await db.execute(
-//     "SELECT * FROM appointments WHERE user_iD = ?",
-//     [user_id]
-//   );
-//   return rows;
-// };
-
-
 module.exports = {
   getAllAppointments,
 };

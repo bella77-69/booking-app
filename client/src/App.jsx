@@ -8,9 +8,10 @@ import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
-import DeleteAppointment from './pages/Admin/DeleteAppointment'
+import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
-import UpdateAppointment from './pages/Admin/UpdateAppointment'
+import UpdateAppointment from "./pages/Admin/UpdateAppointment";
+import RequestUpdateAppointment from "./pages/Dashboard/RequestUpdateAppointment";
 
 function App() {
   return (
@@ -22,12 +23,23 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
 
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
-          <Route path="/admin-dashboard/:userId" exact element={<AdminDashboard />} />
-          <Route path="/admin/update-appointment/:id" element={<UpdateAppointment />} />
+          <Route
+            path="/admin-dashboard/:userId"
+            exact
+            element={<AdminDashboard />}
+          />
+          <Route
+            path="/admin/update-appointment/:id"
+            element={<UpdateAppointment />}
+          />
           <Route path="/book-appointment/:id" element={<BookAppointment />} />
-         
-          <Route path="/delete-appointment/:id" element={<DeleteAppointment />} />
-         
+
+          <Route
+            path="/admin/delete-appointment/:id"
+            element={<DeleteAppointment />}
+          />
+          <Route path="/update-appointment/:id" element={<RequestUpdateAppointment />} />
+          
         </Routes>
         <Footer />
       </BrowserRouter>
