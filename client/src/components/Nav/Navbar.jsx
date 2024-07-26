@@ -61,7 +61,7 @@ export function Navbar() {
   ));
 
   const loginHref = '/login';
-  const signupHref = '/signup';
+  const signupHref = '/register';
 
   return (
     <Box pb={20} mt={20}>

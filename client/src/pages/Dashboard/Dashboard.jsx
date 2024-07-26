@@ -1,20 +1,46 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Card, Text, Button, Container, Title, Paper, Modal, TextInput, Textarea } from "@mantine/core";
 import classes from "./dashboard.module.css";
 
 function Dashboard() {
+  const { id } = useParams();
+  const [appointment, setAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [deleteRequest, setDeleteRequest] = useState({ open: false, appointmentId: null });
   const [reason, setReason] = useState("");
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const fetchAppointment = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const response = await axios.get(
+  //         `http://localhost:8000/api/appointments/${id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       console.log('Appointment data:', response.data.appointment); // Log the data
+  //       setAppointment(response.data.appointment);
+  //     } catch (error) {
+  //       console.error("Failed to fetch appointment details:", error);
+  //     }
+  //   };
+
+  //   fetchAppointment();
+  // }, [id]);
+
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const token = localStorage.getItem("token");
         const user_id = localStorage.getItem("userId");
+        const id = localStorage.getItem("id");
         
         const response = await axios.get(
           `http://localhost:8000/api/appointments/user/${user_id}`,
@@ -32,21 +58,21 @@ function Dashboard() {
     };
   
     fetchAppointments();
-  }, []);
+  }, [id]);
 
   const handleBookAppointment = () => {
     const user_id = localStorage.getItem("userId");
     navigate(`/book-appointment/${user_id}`);
   };
 
-  // const handleUpdateAppointment = (id) => {
-  //   navigate(`/update-appointment/${id}`);
-  // };
-
-  const handleUpdateAppointment  = () => {
-    const user_id = localStorage.getItem("userId");
-    navigate(`/update-appointment/${user_id}`);
+  const handleUpdateAppointment = (id) => {
+    navigate(`/update-appointment/${id}`);
   };
+
+  // const handleUpdateAppointment  = () => {
+  //   const user_id = localStorage.getItem("userId");
+  //   navigate(`/update-appointment/${user_id}`);
+  // };
 
   const handleOpenDeleteRequest = (appointmentId) => {
     setDeleteRequest({ open: true, appointmentId });

@@ -55,9 +55,9 @@ const validateUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   try {
-    const { username, password, email, phone } = req.body;
+    const { full_name, username, password, email, phone_number } = req.body;
     const role = "customer";
-    const newUser = await createUser(username, email, password, role);
+    const newUser = await createUser(full_name, username, email, password, phone_number, role);
     res.status(201).json({ result: newUser });
   } catch (error) {
     res.status(400).json({ error: error.message });

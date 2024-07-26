@@ -12,6 +12,7 @@ import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UpdateAppointment from "./pages/Admin/UpdateAppointment";
 import RequestUpdateAppointment from "./pages/Dashboard/RequestUpdateAppointment";
+import Register from "./pages/Login/RegisterPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path='/register' element={<Register/>} />
 
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
           <Route

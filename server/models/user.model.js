@@ -22,26 +22,25 @@ const verifyUser = async (email) => {
   if (rows.length === 0) throw new Error("User not found");
   return rows[0];
 };
-
-const registerUser = async (username, password, email, phone) => {
+const registerUser = async (full_name, username, password, email, phone_number) => {
   const [result] = await db.execute(
-    "INSERT INTO users (username, password, email, phone, role) VALUES (?, ?, ?, ?, ?)",
-    [username, password, email, phone, "customer"] // Defaulting to 'customer' for new users
+    "INSERT INTO users (full_name, username, password, email, phone_number, role) VALUES (?, ?, ?, ?, ?, ?)",
+    [full_name, username, password, email, phone_number, "customer"] // Defaulting to 'customer' for new users
   );
 
-  return { user_id: result.insertId, username, email, phone };
+  return { user_id: result.insertId, full_name, username, email, phone_number };
 };
 
-const createUser = async (username, email, password, role = "customer") => {
-  if (!username || !email || !password) {
+const createUser = async (full_name, username, email, password, phone_number, role = "customer") => {
+  if (!full_name || !username || !email || !password || !phone_number) {
     throw new Error("Missing required parameters");
   }
   const hashedPassword = await bcrypt.hash(password, 5);
   const [result] = await db.execute(
-    "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-    [username, email, hashedPassword, role]
+    "INSERT INTO users (full_name, username, email, password, phone_number, role) VALUES (?, ?, ?, ?, ?, ?)",
+    [full_name, username, email, hashedPassword, phone_number, role]
   );
-  return { id: result.insertId, username, email, role };
+  return { id: result.insertId, full_name, username, email, phone_number, role };
 };
 
 module.exports = {

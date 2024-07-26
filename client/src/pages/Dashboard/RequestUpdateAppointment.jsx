@@ -1,50 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Title, TextInput, Textarea, Button, Paper } from "@mantine/core";
 import classes from "./updateRequestPage.module.css";
 
-function UpdateRequestPage() {
-  const { id } = useParams();
-  const [appointment, setAppointment] = useState(null);
+function RequestUpdateAppointment() {
+  const { appointmentId } = useParams();
   const [formValues, setFormValues] = useState({
-    service_name: "",
-    service_price: "",
-    service_duration: "",
-    description: "",
-    appointment_date: "",
+    new_date: "",
+    reason: "",
   });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchAppointment = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-        `http://localhost:8000/api/appointments/user/${id}`,
-        
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log("response", response)
-        setAppointment(response.data.appointment);
-        // setFormValues({
-        //   service_name: response.data.appointment.service_name,
-        //   service_price: response.data.appointment.service_price,
-        //   service_duration: response.data.appointment.service_duration,
-        //   description: response.data.appointment.description,
-        //   appointment_date: new Date(response.data.appointment.appointment_date).toISOString().substring(0, 16), // ISO format
-        // });
-      } catch (error) {
-        console.error("Failed to fetch appointment details:", error);
-      }
-    };
-
-    fetchAppointment();
-  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,62 +24,39 @@ function UpdateRequestPage() {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
-        `http://localhost:8000/api/appointments/${appointmentId}`,
-        formValues,
+      await axios.post(
+        `http://localhost:8000/api/update-request`,
+        { appointmentId, ...formValues },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      alert("Appointment updated successfully.");
-      navigate("/dashboard"); // Redirect to dashboard or another page
+      alert("Your request has been sent to the admin.");
+      navigate("/dashboard");
     } catch (error) {
-      console.error("Failed to update appointment:", error);
+      console.error("Failed to send update request:", error);
     }
   };
 
-  if (!appointment) return <p>Loading...</p>;
-
   return (
     <Container size={700} className={classes.wrapper}>
-      <Title order={1}>Update Appointment</Title>
+      <Title order={1}>Request Appointment Update</Title>
       <Paper padding="lg" style={{ marginTop: "20px" }}>
         <form onSubmit={handleSubmit}>
           <TextInput
-            label="Service Name"
-            name="service_name"
-            value={formValues.service_name}
-            onChange={handleChange}
-            required
-          />
-          <TextInput
-            label="Service Price"
-            name="service_price"
-            value={formValues.service_price}
-            onChange={handleChange}
-            required
-          />
-          <TextInput
-            label="Service Duration"
-            name="service_duration"
-            value={formValues.service_duration}
+            label="New Appointment Date"
+            type="datetime-local"
+            name="new_date"
+            value={formValues.new_date}
             onChange={handleChange}
             required
           />
           <Textarea
-            label="Description"
-            name="description"
-            value={formValues.description}
-            onChange={handleChange}
-            required
-          />
-          <TextInput
-            label="Appointment Date"
-            type="datetime-local"
-            name="appointment_date"
-            value={formValues.appointment_date}
+            label="Reason for Update"
+            name="reason"
+            value={formValues.reason}
             onChange={handleChange}
             required
           />
@@ -124,7 +67,7 @@ function UpdateRequestPage() {
             color="blue"
             style={{ marginTop: "20px" }}
           >
-            Submit Update
+            Submit Update Request
           </Button>
         </form>
       </Paper>
@@ -132,4 +75,4 @@ function UpdateRequestPage() {
   );
 }
 
-export default UpdateRequestPage;
+export default RequestUpdateAppointment;
