@@ -7,6 +7,7 @@ const appointmentRoutes = require('./routes/appointment.route');
 const serviceRoutes = require('./routes/services.route');
 const adminRoutes = require('./routes/admin.route');
 
+
 const port = 8000;
 const app = express();
 
@@ -19,5 +20,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/admin', adminRoutes);
+
 
 app.listen(port, () => console.log(`Server is running on ${port}`));
