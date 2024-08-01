@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Title, Paper, TextInput, Button } from '@mantine/core';
+import { Container, Title, Paper, TextInput, Button } from "@mantine/core";
 import classes from "./RegisterPage.module.css";
 
 const Register = () => {
@@ -44,7 +44,8 @@ const Register = () => {
       if (res.data.result) {
         setState((prevState) => ({
           ...prevState,
-          successMessage: "Registration successful. Redirecting to login page...",
+          successMessage:
+            "Registration successful. Redirecting to login page...",
           full_name: "",
           username: "",
           email: "",
@@ -119,19 +120,11 @@ const Register = () => {
             value={state.phone_number}
             onChange={handleChange}
           />
-          <Button
-            fullWidth
-            mt="xl"
-            onClick={handleSubmitClick}
-          >
+          <Button fullWidth mt="xl" onClick={handleSubmitClick}>
             Register
           </Button>
-          {state.successMessage && (
-            <p>{state.successMessage}</p>
-          )}
-          {state.errorMessage && (
-            <p>{state.errorMessage}</p>
-          )}
+          {state.successMessage && <p>{state.successMessage}</p>}
+          {state.errorMessage && <p>{state.errorMessage}</p>}
         </form>
       </Paper>
     </Container>
