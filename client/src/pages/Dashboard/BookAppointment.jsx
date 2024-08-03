@@ -186,7 +186,7 @@ function BookAppointment() {
       }
 
       const response = await axios.post(
-        `http://localhost:8000/api/appointments/book`,
+        `http://localhost:8000/api/appointments`,
         {
           userId: id,
           serviceId: serviceId,
@@ -250,7 +250,8 @@ function BookAppointment() {
         required
         style={{ marginTop: "20px" }}
       />
-      <Select
+      
+      {/* <Select
         label="Appointment Time"
         placeholder="Select a time"
         value={appointmentTime}
@@ -261,7 +262,7 @@ function BookAppointment() {
         }))}
         required
         style={{ marginTop: "20px" }}
-      />
+      /> */}
       <Button
         fullWidth
         variant="outline"

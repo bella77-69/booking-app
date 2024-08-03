@@ -72,7 +72,7 @@ router.post('/populate', async (req, res) => {
   });
   
   // Book an appointment
-  router.post('/book', async (req, res) => {
+  router.post('/', async (req, res) => {
     const { userId, serviceId, date, time } = req.body;
     try {
       const [result] = await pool.query(`
