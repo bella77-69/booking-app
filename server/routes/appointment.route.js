@@ -54,23 +54,21 @@ const {
   createAppointment,
   updateAppointmentController,
   deleteAppointmentController,
-  getAvailableAppointmentsController,
   populateAppointmentsController,
-  bookAppointmentController,
   getAvailableTimeSlots,
 } = require("../controllers/appointment.controller");
 
 router.get("/", getAppointment);
 router.get("/:id", getAppointmentById);
 router.get("/user/:user_id", getAppointmentsByUserId);
-router.get('/available', getAvailableTimeSlots);
+router.get('/available/open', getAvailableTimeSlots);
 router.post("/", createAppointment);
+router.post("/populate", populateAppointmentsController);
+
 router.put("/:id", updateAppointmentController);
 router.delete("/:id", deleteAppointmentController);
 
-// New routes
-router.get("/available", getAvailableAppointmentsController);
-router.post("/populate", populateAppointmentsController);
-router.post("/book", bookAppointmentController);
+
+
 
 module.exports = router;

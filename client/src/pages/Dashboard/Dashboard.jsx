@@ -12,29 +12,6 @@ function Dashboard() {
   const [reason, setReason] = useState("");
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchAppointment = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const response = await axios.get(
-  //         `http://localhost:8000/api/appointments/${id}`,
-  //         {
-  //           headers: {
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-  //       console.log('Appointment data:', response.data.appointment); // Log the data
-  //       setAppointment(response.data.appointment);
-  //     } catch (error) {
-  //       console.error("Failed to fetch appointment details:", error);
-  //     }
-  //   };
-
-  //   fetchAppointment();
-  // }, [id]);
-
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -51,7 +28,7 @@ function Dashboard() {
           }
         );
         setAppointments(response.data.appointments);
-        console.log('Appointments data:', response.data.appointments); // Log the data
+        console.log('Appointments data:', response.data.appointments);
       } catch (error) {
         console.error("Failed to fetch appointments:", error);
       }
@@ -68,11 +45,6 @@ function Dashboard() {
   const handleUpdateAppointment = (id) => {
     navigate(`/update-appointment/${id}`);
   };
-
-  // const handleUpdateAppointment  = () => {
-  //   const user_id = localStorage.getItem("userId");
-  //   navigate(`/update-appointment/${user_id}`);
-  // };
 
   const handleOpenDeleteRequest = (appointmentId) => {
     setDeleteRequest({ open: true, appointmentId });
@@ -132,8 +104,9 @@ function Dashboard() {
                 <Text>Email: {appointment.user_email}</Text>
                 <Text>
                   Date:{" "}
-                  {new Date(appointment.appointment_date).toLocaleString()}
+                  {appointment.appointment_date}
                 </Text>
+                <Text>Time: {appointment.appointment_time}</Text>
                 <Text>Status: {appointment.status}</Text>
                 <Button
                   variant="outline"
