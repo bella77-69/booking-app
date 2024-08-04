@@ -226,7 +226,7 @@ function Dashboard() {
 
     fetchAppointments();
   }, [id]);
-
+  
   const handleBookAppointment = () => {
     const user_id = localStorage.getItem("userId");
     navigate(`/book-appointment/${user_id}`);
@@ -316,11 +316,12 @@ function Dashboard() {
             <Card key={index} size={700} className={classes.card}>
               <Paper style={{ marginBottom: "15px", padding: "15px" }}>
                 <Text>Service: {appointment.service_name}</Text>
+                <Text>Description: {appointment.description}</Text>
                 <Text>Price: {appointment.service_price}</Text>
                 <Text>Duration: {appointment.service_duration}</Text>
-                <Text>Description: {appointment.description}</Text>
-                <Text>User: {appointment.user_name}</Text>
-                <Text>Email: {appointment.user_email}</Text>
+           
+                {/* <Text>User: {appointment.user_name}</Text>
+                <Text>Email: {appointment.user_email}</Text> */}
                 <Text>Date: {formatDate(appointment.appointment_date)}</Text>
                 <Text>Time: {appointment.appointment_time}</Text>
                 <Text>Status: {appointment.status}</Text>

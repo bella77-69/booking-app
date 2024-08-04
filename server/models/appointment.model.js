@@ -57,7 +57,6 @@ const addAppointment  = async (user_id, service_id, appointment_date, appointmen
   }
 };
 
-//TODO:
 //get available time slots
 const getAllAvailableAppointments = async () => {
   try {
@@ -73,34 +72,63 @@ const getAllAvailableAppointments = async () => {
 };
 
 
-//TODO:
-//put request to update an appointment
+// put request to update an appointment
 const updateAppointment = async (id, details) => {
-  const { user_id, service_id, appointment_date, appointment_time, status } = details;
-  const [result] = await db.execute(`
+  try {
+    const { user_id, service_id, appointment_date, appointment_time, status } = details;
+
+    const [result] = await db.execute(`
       UPDATE appointments
-      SET 
-          user_id = ?,
-          service_id = ?,
-          appointment_date = ?,
-          appointment_time = ?,
-          status = ?,
-          updated_at = NOW()
+      SET
+        user_id = COALESCE(?, user_id),
+        service_id = COALESCE(?, service_id),
+        appointment_date = COALESCE(?, appointment_date),
+        appointment_time = COALESCE(?, appointment_time),
+        status = COALESCE(?, status)
       WHERE id = ?
-  `, [user_id, service_id, appointment_date, appointment_time, status, id]);
+    `, [
+      user_id !== undefined ? user_id : null,
+      service_id !== undefined ? service_id : null,
+      appointment_date !== undefined ? appointment_date : null,
+      appointment_time !== undefined ? appointment_time : null,
+      status !== undefined ? status : null,
+      id
+    ]);
 
-  return result;
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
-//TODO:
-//delete request to delete an appointment
+//delete users appointment
 const deleteAppointment = async (id) => {
-  const [result] = await db.execute(
-    "DELETE FROM appointments WHERE id = ?",
-    [id]
-  );
-  if (result.affectedRows === 0) throw new Error("Appointment not found");
+  try {
+    const [result] = await db.execute(`
+      UPDATE appointments
+      SET status = 'available', user_id = NULL, service_id = NULL
+      WHERE id = ?
+    `, [id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
+
+// delete request to delete an entire appointment
+const deleteAppointmentSpot = async (id) => {
+  try {
+    const [result] = await db.execute(`
+      DELETE FROM appointments WHERE id = ?
+    `, [id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 
 // post request to populate appointments
 const populateAppointments = async () => {
@@ -155,6 +183,7 @@ module.exports = {
   addAppointment,
   updateAppointment,
   deleteAppointment,
+  deleteAppointmentSpot,
   populateAppointments,
   getAllAvailableAppointments,
 };

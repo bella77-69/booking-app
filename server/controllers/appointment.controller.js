@@ -5,6 +5,7 @@ const {
   addAppointment,
   updateAppointment,
   deleteAppointment,
+  deleteAppointmentSpot,
   getAllAvailableAppointments,
   populateAppointments,
 } = require("../models/appointment.model");
@@ -73,7 +74,6 @@ const createAppointment = async (req, res) => {
   }
 };
 
-//TODO:
 //get available time slots
 const getAvailableTimeSlots = async (req, res) => {
   try {
@@ -84,50 +84,67 @@ const getAvailableTimeSlots = async (req, res) => {
   }
 };
 
-//TODO:
-//put request to update appointment
+// put request to update an appointment
 const updateAppointmentController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { user_id, service_id, appointment_date, appointment_time, status } = req.body;
-
-    if (!user_id || !service_id || !appointment_date || appointment_time || !status) {
-      return res.status(400).send("All fields are required");
-    }
-
-    const result = await updateAppointment(id, { user_id, service_id, appointment_date, appointment_time, status });
-
-    if (result.affectedRows === 0) {
-      return res.status(404).send("Appointment not found");
-    }
-
-    const updatedAppointment = await getAppointmentsForUser(id);
-
-    res.status(200).json({
-      message: "Appointment updated successfully",
-      appointment: updatedAppointment,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("An error occurred while updating the appointment");
-  }
-};
-
-//TODO:
-//delete request to delete appointment
-const deleteAppointmentController = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid appointment ID" });
+      throw new Error("Invalid appointment ID");
+    }
+    
+    const updatedDetails = req.body;
+    const result = await updateAppointment(id, updatedDetails);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Appointment not found or no changes made.");
     }
 
-    await deleteAppointment(id);
-    res.status(200).json({ message: "Appointment deleted successfully" });
+    res.status(200).send("Appointment updated successfully.");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+//delete appointment for users to cancel their appointments
+const deleteAppointmentController = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      throw new Error("Invalid appointment ID");
+    }
+
+    const result = await deleteAppointment(id);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Appointment not found.");
+    }
+
+    res.status(200).send("Appointment status updated to 'available'.");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// delete request to delete an entire appointment
+const deleteController = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      throw new Error("Invalid appointment ID");
+    }
+
+    const result = await deleteAppointmentSpot(id);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Appointment not found.");
+    }
+
+    res.status(200).send("Appointment deleted successfully.");
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 const populateAppointmentsController = async (req, res) => {
   try {
@@ -146,6 +163,7 @@ module.exports = {
   createAppointment,
   updateAppointmentController,
   deleteAppointmentController,
+  deleteController,
   populateAppointmentsController,
   getAvailableTimeSlots
 };

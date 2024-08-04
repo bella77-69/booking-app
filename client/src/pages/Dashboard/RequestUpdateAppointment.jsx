@@ -8,6 +8,7 @@ function RequestUpdateAppointment() {
   const { appointmentId } = useParams();
   const [formValues, setFormValues] = useState({
     new_date: "",
+    new_time: "",
     reason: "",
   });
   const navigate = useNavigate();
@@ -47,9 +48,17 @@ function RequestUpdateAppointment() {
         <form onSubmit={handleSubmit}>
           <TextInput
             label="New Appointment Date"
-            type="datetime-local"
+            type="date"
             name="new_date"
             value={formValues.new_date}
+            onChange={handleChange}
+            required
+          />
+          <TextInput
+            label="New Appointment Time"
+            type="time"
+            name="new_time"
+            value={formValues.new_time}
             onChange={handleChange}
             required
           />

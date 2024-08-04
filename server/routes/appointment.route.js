@@ -7,6 +7,7 @@ const {
   createAppointment,
   updateAppointmentController,
   deleteAppointmentController,
+  deleteController,
   populateAppointmentsController,
   getAvailableTimeSlots,
 } = require("../controllers/appointment.controller");
@@ -20,8 +21,7 @@ router.post("/populate", populateAppointmentsController);
 
 router.put("/:id", updateAppointmentController);
 router.delete("/:id", deleteAppointmentController);
-
-
+router.delete("/delete/:id", deleteController);
 
 
 module.exports = router;
