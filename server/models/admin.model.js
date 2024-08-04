@@ -13,6 +13,7 @@ const getAllAppointments = async () => {
           s.service_price as service_price,
             s.service_duration as service_duration,
           a.appointment_date,
+          a.appointment_time,
           a.status
         FROM appointments a
         JOIN users u ON a.user_id = u.user_id

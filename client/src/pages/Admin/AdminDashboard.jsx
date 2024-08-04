@@ -41,6 +41,14 @@ const AdminDashboard = () => {
         navigate(`/admin/delete-appointment/${appointment_id}`)
         };
 
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const day = String(date.getDate()).padStart(2, "0");
+          return `${year}/${month}/${day}`;
+        }; 
+
   return (
     <Container size={700}>
       <Title order={1}>Admin Dashboard</Title>
@@ -57,10 +65,8 @@ const AdminDashboard = () => {
                 <Text>Username: {appointments.username}</Text>
                 <Text>Phone Number: {appointments.phone_number}</Text>
                 <Text>Service Booked: {appointments.service_name}</Text>
-                <Text>
-                  Appointment Date:{" "}
-                  {new Date(appointments.appointment_date).toLocaleString()}
-                </Text>
+                <Text>Date: {formatDate(appointments.appointment_date)}</Text>
+                <Text>Time: {appointments.appointment_time}</Text>
                 <Text>Price: {appointments.service_price}</Text>
                 <Text>Status: {appointments.status}</Text>
                 <Button
