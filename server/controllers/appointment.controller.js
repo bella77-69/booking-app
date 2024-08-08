@@ -36,11 +36,10 @@ const getAppointmentById = async (req, res) => {
     }
 
     res.json(appointment);
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
 //get appointments by user id
 const getAppointmentsByUserId = async (req, res) => {
@@ -67,27 +66,48 @@ const createAppointment = async (req, res) => {
     // Get the duration of the service
     const service = await getServiceById(service_id);
     if (!service) {
-      return res.status(400).send('Service not found.');
+      return res.status(400).send("Service not found.");
     }
 
     const serviceDuration = service.service_duration; // e.g., 60 minutes
-    const appointmentEndTime = calculateEndTime(appointment_time, serviceDuration);
+    const appointmentEndTime = calculateEndTime(
+      appointment_time,
+      serviceDuration
+    );
 
     // Check if the time slot is available
-    const isAvailable = await checkAvailability(appointment_date, appointment_time, appointmentEndTime);
+    const isAvailable = await checkAvailability(
+      appointment_date,
+      appointment_time,
+      appointmentEndTime
+    );
     if (!isAvailable) {
-      return res.status(400).send('Appointment time is already booked or does not exist.');
+      return res
+        .status(400)
+        .send("Appointment time is already booked or does not exist.");
     }
 
     // Book the appointment and update affected time slots
-    const result = await addAppointment(user_id, service_id, appointment_date, appointment_time, appointmentEndTime);
-    await updateTimeSlots(appointment_date, appointment_time, appointmentEndTime, user_id, service_id);
+    const result = await addAppointment(
+      user_id,
+      service_id,
+      appointment_date,
+      appointment_time,
+      appointmentEndTime
+    );
+    await updateTimeSlots(
+      appointment_date,
+      appointment_time,
+      appointmentEndTime,
+      user_id,
+      service_id
+    );
 
     if (result.affectedRows === 0) {
-      return res.status(400).send('Failed to book the appointment.');
+      return res.status(400).send("Failed to book the appointment.");
     }
 
-    res.status(200).send('Appointment booked successfully.');
+    res.status(200).send("Appointment booked successfully.");
   } catch (error) {
     res.status(500).send(error.toString());
   }
@@ -95,13 +115,12 @@ const createAppointment = async (req, res) => {
 
 // Helper function to calculate end time
 const calculateEndTime = (startTime, durationMinutes) => {
-  const [hours, minutes] = startTime.split(':').map(Number);
+  const [hours, minutes] = startTime.split(":").map(Number);
   const end = new Date();
   end.setHours(hours, minutes);
   end.setMinutes(end.getMinutes() + durationMinutes);
-  return `${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`;
+  return `${end.getHours()}:${end.getMinutes().toString().padStart(2, "0")}`;
 };
-
 
 //get available time slots
 const getAvailableTimeSlots = async (req, res) => {
@@ -120,7 +139,7 @@ const updateAppointmentController = async (req, res) => {
     if (isNaN(id)) {
       throw new Error("Invalid appointment ID");
     }
-    
+
     const updatedDetails = req.body;
     const result = await updateAppointment(id, updatedDetails);
 
@@ -158,12 +177,11 @@ const deleteController = async (req, res) => {
 const populateAppointmentsController = async (req, res) => {
   try {
     await populateAppointments();
-    res.status(200).send('Appointments populated successfully.');
+    res.status(200).send("Appointments populated successfully.");
   } catch (error) {
     res.status(500).send(error.toString());
   }
 };
-
 
 module.exports = {
   getAppointment,
@@ -173,5 +191,5 @@ module.exports = {
   updateAppointmentController,
   deleteController,
   populateAppointmentsController,
-  getAvailableTimeSlots
+  getAvailableTimeSlots,
 };

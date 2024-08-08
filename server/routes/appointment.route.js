@@ -6,7 +6,6 @@ const {
   getAppointmentsByUserId,
   createAppointment,
   updateAppointmentController,
-  // deleteAppointmentController,
   deleteController,
   populateAppointmentsController,
   getAvailableTimeSlots,
@@ -15,12 +14,10 @@ const {
 router.get("/", getAppointment);
 router.get("/:id", getAppointmentById);
 router.get("/user/:user_id", getAppointmentsByUserId);
-router.get('/available/open', getAvailableTimeSlots);
+router.get("/available/open", getAvailableTimeSlots);
 router.post("/", createAppointment);
 router.post("/populate", populateAppointmentsController);
-
 router.put("/:id", updateAppointmentController);
-// router.delete("/:id", deleteAppointmentController);
 router.delete("/delete/:id", deleteController);
 
 module.exports = router;
