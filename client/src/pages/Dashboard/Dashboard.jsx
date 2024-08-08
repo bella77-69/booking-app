@@ -76,6 +76,15 @@ function Dashboard() {
                 <br />
                 <Button
                   variant="outline"
+                  color="blue"
+                  onClick={() =>
+                    navigate(`/update-appointment/${appointment.id}`)
+                  }
+                >
+                  Update Appointment
+                </Button>
+                <Button
+                  variant="outline"
                   color="red"
                   onClick={() =>
                     navigate(`/delete-appointment/${user_id}/${appointment.id}`)

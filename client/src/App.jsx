@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UpdateAppointment from "./pages/Admin/UpdateAppointment";
 import Register from "./pages/Login/RegisterPage";
 import DeleteRequest from "./pages/Dashboard/DeleteRequest";
+import UserUpdate from "./pages/Dashboard/UserUpdate";
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
             path="/admin/delete-appointment/:id"
             element={<DeleteAppointment />}
           />
-  
+      <Route path='/update-appointment/:id' element={<UserUpdate/>} />
           <Route path="/delete-appointment/:user_id/:id" element={<DeleteRequest />} />
         </Routes>
       
