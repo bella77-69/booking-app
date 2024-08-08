@@ -20,6 +20,7 @@ const findAppointmentById = async (id) => {
 const getAppointmentsForUser = async (user_id) => {
   const [rows] = await db.execute(
     `SELECT 
+    Appointments.id AS id,
         Users.full_name AS user_name,
         Users.email AS user_email,
         Services.service_name,
@@ -42,14 +43,68 @@ const getAppointmentsForUser = async (user_id) => {
   return rows;
 };
 
-// post request to create an appointment
-const addAppointment  = async (user_id, service_id, appointment_date, appointment_time) => {
+// Function to get service details by ID
+const getServiceById = async (service_id) => {
+  try {
+    const [rows] = await db.execute(`
+      SELECT service_duration FROM services WHERE service_id = ?
+    `, [service_id]);
+
+    if (rows.length === 0) {
+      throw new Error("Service not found");
+    }
+
+    return rows[0];
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+// Helper function to check availability
+const checkAvailability = async (appointmentDate, startTime, endTime) => {
+  const [rows] = await db.execute(`
+    SELECT * FROM appointments
+    WHERE appointment_date = ?
+    AND (
+      (appointment_time BETWEEN ? AND ?)
+      OR (ADDDATE(CONCAT(appointment_date, ' ', appointment_time), INTERVAL 1 MINUTE) BETWEEN ? AND ?)
+    )
+    AND status = 'booked'
+  `, [appointmentDate, startTime, endTime, startTime, endTime]);
+
+  return rows.length === 0;
+};
+
+// Update availability of affected time slots
+const updateTimeSlots = async (appointmentDate, startTime, endTime, userId, serviceId) => {
+  try {
+    // Update the status of the slots within the given time range to 'booked'
+    await db.execute(`
+      UPDATE appointments
+      SET status = 'booked', user_id = ?, service_id = ?
+      WHERE appointment_date = ?
+      AND appointment_time BETWEEN ? AND ?
+    `, [userId, serviceId, appointmentDate, startTime, endTime]);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const addAppointment = async (user_id, service_id, appointment_date, appointment_time, appointment_end_time) => {
   try {
     const [result] = await db.query(`
       UPDATE appointments
       SET user_id = ?, service_id = ?, status = 'booked'
       WHERE appointment_date = ? AND appointment_time = ? AND status = 'available'
     `, [user_id, service_id, appointment_date, appointment_time]);
+
+    // Update the subsequent slots to be 'available'
+    await db.query(`
+      UPDATE appointments
+      SET status = 'available'
+      WHERE appointment_date = ? AND appointment_time >= ?
+      AND appointment_time < ?
+    `, [appointment_date, appointment_end_time, appointment_end_time]);
 
     return result;
   } catch (error) {
@@ -71,8 +126,6 @@ const getAllAvailableAppointments = async () => {
   }
 };
 
-
-// put request to update an appointment
 const updateAppointment = async (id, details) => {
   try {
     const { user_id, service_id, appointment_date, appointment_time, status } = details;
@@ -101,12 +154,12 @@ const updateAppointment = async (id, details) => {
   }
 };
 
-//delete users appointment
-const deleteAppointment = async (id) => {
+//delete request to delete an appointment
+const clearAppointmentUserInfo = async (id) => {
   try {
     const [result] = await db.execute(`
       UPDATE appointments
-      SET status = 'available', user_id = NULL, service_id = NULL
+      SET user_id = NULL, service_id = NULL, status = 'available'
       WHERE id = ?
     `, [id]);
 
@@ -115,20 +168,6 @@ const deleteAppointment = async (id) => {
     throw new Error(error.message);
   }
 };
-
-// delete request to delete an entire appointment
-const deleteAppointmentSpot = async (id) => {
-  try {
-    const [result] = await db.execute(`
-      DELETE FROM appointments WHERE id = ?
-    `, [id]);
-
-    return result;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 
 // post request to populate appointments
 const populateAppointments = async () => {
@@ -182,8 +221,10 @@ module.exports = {
   getAppointmentsForUser,
   addAppointment,
   updateAppointment,
-  deleteAppointment,
-  deleteAppointmentSpot,
+  clearAppointmentUserInfo,
   populateAppointments,
   getAllAvailableAppointments,
+  getServiceById,
+  checkAvailability,
+  updateTimeSlots,
 };

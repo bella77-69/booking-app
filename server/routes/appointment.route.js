@@ -6,7 +6,7 @@ const {
   getAppointmentsByUserId,
   createAppointment,
   updateAppointmentController,
-  deleteAppointmentController,
+  // deleteAppointmentController,
   deleteController,
   populateAppointmentsController,
   getAvailableTimeSlots,
@@ -20,8 +20,7 @@ router.post("/", createAppointment);
 router.post("/populate", populateAppointmentsController);
 
 router.put("/:id", updateAppointmentController);
-router.delete("/:id", deleteAppointmentController);
+// router.delete("/:id", deleteAppointmentController);
 router.delete("/delete/:id", deleteController);
-
 
 module.exports = router;

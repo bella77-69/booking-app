@@ -11,8 +11,8 @@ import BookAppointment from "./pages/Dashboard/BookAppointment";
 import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import UpdateAppointment from "./pages/Admin/UpdateAppointment";
-import RequestUpdateAppointment from "./pages/Dashboard/RequestUpdateAppointment";
 import Register from "./pages/Login/RegisterPage";
+import DeleteRequest from "./pages/Dashboard/DeleteRequest";
 
 function App() {
   return (
@@ -40,9 +40,10 @@ function App() {
             path="/admin/delete-appointment/:id"
             element={<DeleteAppointment />}
           />
-          <Route path="/update-appointment/:id" element={<RequestUpdateAppointment />} />
-          
+  
+          <Route path="/delete-appointment/:user_id/:id" element={<DeleteRequest />} />
         </Routes>
+      
         <Footer />
       </BrowserRouter>
     </MantineProvider>

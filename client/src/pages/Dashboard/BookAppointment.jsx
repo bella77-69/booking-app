@@ -15,7 +15,9 @@ function BookAppointment() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
-  const [appointmentDate, setAppointmentDate] = useState(new Date().toISOString().slice(0, 10));
+  const [appointmentDate, setAppointmentDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
   const [appointmentTime, setAppointmentTime] = useState("");
   const [message, setMessage] = useState("");
   const [serviceId, setServiceId] = useState("");
@@ -37,15 +39,23 @@ function BookAppointment() {
     const fetchAvailableAppointments = async () => {
       if (!appointmentDate) return;
       try {
-        const response = await axios.get("http://localhost:8000/api/appointments/available/open", {
-          params: { date: appointmentDate },
-        });
-        
-        const uniqueTimes = [...new Set(response.data.map(app => app.appointment_time))];
-        
+        const response = await axios.get(
+          "http://localhost:8000/api/appointments/available/open",
+          {
+            params: { date: appointmentDate },
+          }
+        );
+
+        const uniqueTimes = [
+          ...new Set(response.data.map((app) => app.appointment_time)),
+        ];
+
         setAvailableTimes(uniqueTimes);
       } catch (error) {
-        console.error("An error occurred while fetching available times:", error);
+        console.error(
+          "An error occurred while fetching available times:",
+          error
+        );
       }
     };
     fetchAvailableAppointments();
