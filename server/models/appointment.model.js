@@ -20,28 +20,30 @@ const findAppointmentById = async (id) => {
 const getAppointmentsForUser = async (user_id) => {
   const [rows] = await db.execute(
     `SELECT 
-    Appointments.id AS id,
-        Users.full_name AS user_name,
-        Users.email AS user_email,
-        Services.service_name,
-        Services.service_price,
-        Services.service_duration,
-        Services.description,
-        Appointments.appointment_date,
-        Appointments.appointment_time,
-        Appointments.status
+      Appointments.id AS id,
+      Users.full_name AS user_name,
+      Users.email AS user_email,
+      Services.service_name,
+      Services.service_price,
+      Services.service_duration,
+      Services.description,
+      Appointments.appointment_date,
+      Appointments.start_time,
+      Appointments.end_time,
+      Appointments.status
      FROM 
-        Appointments
+      Appointments
      JOIN 
-        Users ON Appointments.user_id = Users.user_id
+      Users ON Appointments.user_id = Users.user_id
      JOIN 
-        Services ON Appointments.service_id = Services.service_id
+      Services ON Appointments.service_id = Services.service_id
      WHERE 
-        Users.user_id = ?`,
+      Users.user_id = ?`,
     [user_id]
   );
   return rows;
 };
+
 
 // Function to get service details by ID
 const getServiceById = async (service_id) => {
@@ -66,8 +68,8 @@ const checkAvailability = async (appointmentDate, startTime, endTime) => {
     SELECT * FROM appointments
     WHERE appointment_date = ?
     AND (
-      (appointment_time BETWEEN ? AND ?)
-      OR (ADDDATE(CONCAT(appointment_date, ' ', appointment_time), INTERVAL 1 MINUTE) BETWEEN ? AND ?)
+      (start_time BETWEEN ? AND ?)
+      OR (ADDDATE(CONCAT(appointment_date, ' ', start_time), INTERVAL 1 MINUTE) BETWEEN ? AND ?)
     )
     AND status = 'booked'
   `, [appointmentDate, startTime, endTime, startTime, endTime]);
@@ -75,36 +77,13 @@ const checkAvailability = async (appointmentDate, startTime, endTime) => {
   return rows.length === 0;
 };
 
-// Update availability of affected time slots
-const updateTimeSlots = async (appointmentDate, startTime, endTime, userId, serviceId) => {
-  try {
-    // Update the status of the slots within the given time range to 'booked'
-    await db.execute(`
-      UPDATE appointments
-      SET status = 'booked', user_id = ?, service_id = ?
-      WHERE appointment_date = ?
-      AND appointment_time BETWEEN ? AND ?
-    `, [userId, serviceId, appointmentDate, startTime, endTime]);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
 
-const addAppointment = async (user_id, service_id, appointment_date, appointment_time, appointment_end_time) => {
+const addAppointment = async (user_id, service_id, appointment_date, startTime) => {
   try {
-    const [result] = await db.query(`
-      UPDATE appointments
-      SET user_id = ?, service_id = ?, status = 'booked'
-      WHERE appointment_date = ? AND appointment_time = ? AND status = 'available'
-    `, [user_id, service_id, appointment_date, appointment_time]);
-
-    // Update the subsequent slots to be 'available'
-    await db.query(`
-      UPDATE appointments
-      SET status = 'available'
-      WHERE appointment_date = ? AND appointment_time >= ?
-      AND appointment_time < ?
-    `, [appointment_date, appointment_end_time, appointment_end_time]);
+    const [result] = await db.execute(`
+      INSERT INTO appointments (user_id, service_id, appointment_date, start_time, status)
+      VALUES (?, ?, ?, ?, 'booked')
+    `, [user_id, service_id, appointment_date, startTime]);
 
     return result;
   } catch (error) {
@@ -112,13 +91,30 @@ const addAppointment = async (user_id, service_id, appointment_date, appointment
   }
 };
 
+
+// Update availability of affected time slots
+const updateTimeSlots = async (appointmentDate, startTime, endTime, userId, serviceId) => {
+  try {
+    // Update all affected time slots to 'booked'
+    await db.execute(`
+      UPDATE appointments
+      SET status = 'booked', user_id = ?, service_id = ?
+      WHERE appointment_date = ?
+      AND (start_time BETWEEN ? AND ?)
+    `, [userId, serviceId, appointmentDate, startTime, endTime]);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
 //get available time slots
 const getAllAvailableAppointments = async () => {
   try {
     const [rows] = await db.execute(`
       SELECT * FROM appointments
       WHERE status = 'available'
-      ORDER BY appointment_date, appointment_time
+      ORDER BY appointment_date, start_time
     `);
     return rows;
   } catch (error) {
@@ -128,7 +124,7 @@ const getAllAvailableAppointments = async () => {
 
 const updateAppointment = async (id, details) => {
   try {
-    const { user_id, service_id, appointment_date, appointment_time, status } = details;
+    const { user_id, service_id, appointment_date, start_time, end_time, status } = details;
 
     const [result] = await db.execute(`
       UPDATE appointments
@@ -136,14 +132,16 @@ const updateAppointment = async (id, details) => {
         user_id = COALESCE(?, user_id),
         service_id = COALESCE(?, service_id),
         appointment_date = COALESCE(?, appointment_date),
-        appointment_time = COALESCE(?, appointment_time),
+        start_time = COALESCE(?, start_time),
+        end_time = COALESCE(?, end_time),
         status = COALESCE(?, status)
       WHERE id = ?
     `, [
       user_id !== undefined ? user_id : null,
       service_id !== undefined ? service_id : null,
       appointment_date !== undefined ? appointment_date : null,
-      appointment_time !== undefined ? appointment_time : null,
+      start_time !== undefined ? start_time : null,
+      end_time !== undefined ? end_time : null,
       status !== undefined ? status : null,
       id
     ]);
@@ -153,6 +151,7 @@ const updateAppointment = async (id, details) => {
     throw new Error(error.message);
   }
 };
+
 
 //delete request to delete an appointment
 const clearAppointmentUserInfo = async (id) => {
@@ -200,8 +199,8 @@ const populateAppointments = async () => {
         IF @start_time IS NOT NULL THEN
           SET @current_time = @start_time;
           WHILE @current_time < @end_time DO
-            INSERT IGNORE INTO appointments (appointment_date, appointment_time, status)
-            VALUES (@current_date, @current_time, 'available');
+            INSERT IGNORE INTO appointments (appointment_date, start_time, end_time, status)
+            VALUES (@current_date, @current_time, ADDTIME(@current_time, '01:00:00'), 'available');
             SET @current_time = ADDTIME(@current_time, '01:00:00');
           END WHILE;
         END IF;
@@ -214,6 +213,7 @@ const populateAppointments = async () => {
   await db.query(createProcedureSql);
   await db.query(`CALL PopulateAppointments()`);
 };
+
 
 module.exports = {
   getAllAppointments,

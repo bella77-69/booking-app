@@ -70,9 +70,10 @@ function Dashboard() {
                 <Text>Service: {appointment.service_name}</Text>
                 <Text>Description: {appointment.description}</Text>
                 <Text>Price: {appointment.service_price}</Text>
-                <Text>Duration: {appointment.service_duration}</Text>
+              
                 <Text>Date: {formatDate(appointment.appointment_date)}</Text>
-                <Text>Time: {appointment.appointment_time}</Text>
+                <Text>Time: {appointment.start_time}</Text>
+                  <Text>Duration: {appointment.service_duration}</Text>
                 <br />
                 <Button
                   variant="outline"

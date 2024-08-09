@@ -18,7 +18,7 @@ function BookAppointment() {
   const [appointmentDate, setAppointmentDate] = useState(
     new Date().toISOString().slice(0, 10)
   );
-  const [appointmentTime, setAppointmentTime] = useState("");
+  const [startTime, setAppointmentTime] = useState("");
   const [message, setMessage] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [availableTimes, setAvailableTimes] = useState([]);
@@ -47,7 +47,7 @@ function BookAppointment() {
         );
 
         const uniqueTimes = [
-          ...new Set(response.data.map((app) => app.appointment_time)),
+          ...new Set(response.data.map((app) => app.start_time)),
         ];
 
         setAvailableTimes(uniqueTimes);
@@ -68,14 +68,14 @@ function BookAppointment() {
         setMessage("User not authenticated. Please log in.");
         return;
       }
-
+  
       const response = await axios.post(
         `http://localhost:8000/api/appointments`,
         {
           user_id: id,
           service_id: serviceId,
           appointment_date: appointmentDate,
-          appointment_time: appointmentTime,
+          start_time: startTime,
         },
         {
           headers: {
@@ -83,7 +83,9 @@ function BookAppointment() {
           },
         }
       );
-
+  
+      console.log("Booking Response:", response);
+  
       navigate(`/dashboard/${id}`);
       showNotification({
         title: "Success",
@@ -91,6 +93,7 @@ function BookAppointment() {
         color: "green",
       });
     } catch (error) {
+      console.error("Booking Error:", error.response ? error.response.data : error.message);
       if (error.response && error.response.data && error.response.data.error) {
         setMessage(error.response.data.error);
       } else {
@@ -137,7 +140,7 @@ function BookAppointment() {
       <Select
         label="Appointment Time"
         placeholder="Select an available time"
-        value={appointmentTime}
+        value={startTime}
         onChange={(value) => setAppointmentTime(value)}
         data={availableTimes.map((time) => ({
           value: time,
