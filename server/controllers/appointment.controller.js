@@ -2,14 +2,13 @@ const {
   getAllAppointments,
   findAppointmentById,
   getAppointmentsForUser,
+  getServiceById,
+  isTimeAvailable,
   addAppointment,
   updateAppointment,
-  clearAppointmentUserInfo,
   getAllAvailableAppointments,
-  populateAppointments,
-  getServiceById,
-  checkAvailability,
-  updateTimeSlots,
+  updateAppointmentStatus,
+  clearAppointmentUserInfo,
 } = require("../models/appointment.model");
 
 //get all appointments
@@ -59,69 +58,57 @@ const getAppointmentsByUserId = async (req, res) => {
   }
 };
 
+//create appointment
 const createAppointment = async (req, res) => {
   const { user_id, service_id, appointment_date, start_time } = req.body;
-  console.log("Received Appointment Data:", { user_id, service_id, appointment_date, start_time });
 
   try {
-    // Get the duration of the service
+    // Fetch the service duration
     const service = await getServiceById(service_id);
-    if (!service) {
-      return res.status(400).send("Service not found.");
-    }
+    const service_duration = service.service_duration;
 
-    const serviceDuration = service.service_duration; // e.g., 120 minutes
-    const appointmentEndTime = calculateEndTime(start_time, serviceDuration);
+    // Calculate the end time
+    const startTime = new Date(`1970-01-01T${start_time}Z`);
+    const endTime = new Date(startTime.getTime() + service_duration * 60000);
+    const end_time = endTime.toISOString().substr(11, 8); // Format HH:MM:SS
 
-    // Check if all time slots are available
-    const timeSlotsAvailable = await checkAvailability(
+    // Check if the time slot is available
+    const available = await isTimeAvailable(
       appointment_date,
       start_time,
-      appointmentEndTime
+      end_time
     );
 
-    if (!timeSlotsAvailable) {
+    if (!available) {
       return res
         .status(400)
-        .send("One or more time slots are already booked or do not exist.");
+        .json({ message: "The selected time slot is not available." });
     }
 
-    // Book the appointment
-    const result = await addAppointment(
+    // Create the appointment
+    const result = await addAppointment({
       user_id,
       service_id,
       appointment_date,
       start_time,
-      appointmentEndTime
-    );
+      end_time,
+    });
 
-    if (result.affectedRows === 0) {
-      return res.status(400).send("Failed to book the appointment.");
-    }
+    const appointmentId = result.insertId;
 
-    // Update time slots
-    await updateTimeSlots(
-      appointment_date,
-      start_time,
-      appointmentEndTime,
-      user_id,
-      service_id
-    );
+    // Update the status to 'booked'
+    await updateAppointment(appointmentId, "booked");
 
-    res.status(200).send("Appointment booked successfully.");
+    res.status(201).json({
+      message: "Appointment created successfully.",
+      appointmentId: appointmentId,
+    });
   } catch (error) {
-    console.error("Create Appointment Error:", error);
-    res.status(500).send(error.toString());
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while creating the appointment." });
   }
-};
-
-// Helper function to calculate end time
-const calculateEndTime = (startTime, durationMinutes) => {
-  const [hours, minutes] = startTime.split(":").map(Number);
-  const end = new Date();
-  end.setHours(hours, minutes);
-  end.setMinutes(end.getMinutes() + durationMinutes);
-  return `${end.getHours()}:${end.getMinutes().toString().padStart(2, "0")}`;
 };
 
 //get available time slots
@@ -139,21 +126,17 @@ const updateAppointmentController = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
-      throw new Error("Invalid appointment ID");
+      return res.status(400).json({ error: "Invalid appointment ID" });
     }
 
-    const { user_id, service_id, appointment_date, start_time, status } = req.body;
-    const updatedDetails = {
-      user_id,
-      service_id,
-      appointment_date,
-      start_time,
-      status
-    };
-    const result = await updateAppointment(id, updatedDetails);
+    const updatedDetails = req.body;
+
+    const result = await updateAppointmentStatus(id, updatedDetails);
 
     if (result.affectedRows === 0) {
-      return res.status(404).send("Appointment not found or no changes made.");
+      return res
+        .status(404)
+        .json({ error: "Appointment not found or no changes made." });
     }
 
     res.status(200).send("Appointment updated successfully.");
@@ -161,8 +144,6 @@ const updateAppointmentController = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 //delete appointment
 const deleteController = async (req, res) => {
@@ -184,23 +165,12 @@ const deleteController = async (req, res) => {
   }
 };
 
-//populate appointments
-const populateAppointmentsController = async (req, res) => {
-  try {
-    await populateAppointments();
-    res.status(200).send("Appointments populated successfully.");
-  } catch (error) {
-    res.status(500).send(error.toString());
-  }
-};
-
 module.exports = {
   getAppointment,
   getAppointmentById,
   getAppointmentsByUserId,
   createAppointment,
+  getAvailableTimeSlots,
   updateAppointmentController,
   deleteController,
-  populateAppointmentsController,
-  getAvailableTimeSlots,
 };

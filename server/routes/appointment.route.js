@@ -7,7 +7,6 @@ const {
   createAppointment,
   updateAppointmentController,
   deleteController,
-  populateAppointmentsController,
   getAvailableTimeSlots,
 } = require("../controllers/appointment.controller");
 
@@ -16,7 +15,6 @@ router.get("/:id", getAppointmentById);
 router.get("/user/:user_id", getAppointmentsByUserId);
 router.get("/available/open", getAvailableTimeSlots);
 router.post("/", createAppointment);
-router.post("/populate", populateAppointmentsController);
 router.put("/:id", updateAppointmentController);
 router.delete("/delete/:id", deleteController);
 
