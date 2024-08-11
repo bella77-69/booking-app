@@ -56,47 +56,106 @@ const getAppointmentsByUserId = async (req, res) => {
 };
 
 //create appointment
+// const createAppointment = async (req, res) => {
+//   try {
+//     const { user_id, service_id, appointment_date, start_time, end_time } =
+//       req.body;
+
+//     if (!appointment_date || !start_time) {
+//       return res
+//         .status(400)
+//         .json({ error: "Date and start time are required" });
+//     }
+
+//     // Check if an appointment already exists for the given date and time
+//     const existingAppointment = await findAppointmentByDateAndTime(
+//       appointment_date,
+//       start_time
+//     );
+
+//     const newDetails = {
+//       user_id,
+//       service_id,
+//       appointment_date,
+//       start_time,
+//       end_time,
+//       status: "booked", // Set status to "booked"
+//     };
+
+//     if (existingAppointment) {
+//       // Update existing appointment
+//       const result = await updateAppointmentStatus(
+//         existingAppointment.id,
+//         newDetails
+//       );
+
+//       if (result.affectedRows === 0) {
+//         return res
+//           .status(404)
+//           .json({ error: "Appointment not found or no changes made." });
+//       }
+
+//       return res.status(200).send("Appointment updated successfully.");
+//     } 
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+
 const createAppointment = async (req, res) => {
   try {
-    const { user_id, service_id, appointment_date, start_time, end_time } =
-      req.body;
+    const { user_id, service_id, appointment_date, start_time, end_time } = req.body;
 
     if (!appointment_date || !start_time) {
-      return res
-        .status(400)
-        .json({ error: "Date and start time are required" });
+      return res.status(400).json({ error: "Date and start time are required" });
     }
 
     // Check if an appointment already exists for the given date and time
-    const existingAppointment = await findAppointmentByDateAndTime(
-      appointment_date,
-      start_time
-    );
-
-    const newDetails = {
-      user_id,
-      service_id,
-      appointment_date,
-      start_time,
-      end_time,
-      status: "booked", // Set status to "booked"
-    };
+    const existingAppointment = await findAppointmentByDateAndTime(appointment_date, start_time);
 
     if (existingAppointment) {
-      // Update existing appointment
-      const result = await updateAppointmentStatus(
-        existingAppointment.id,
-        newDetails
-      );
+      if (existingAppointment.status === 'booked') {
+        // If the existing appointment is booked, do not allow the new booking
+        return res.status(400).json({ error: "The selected time slot is already booked." });
+      }
+
+      // Update existing appointment if status is not "booked"
+      const result = await updateAppointmentStatus(existingAppointment.id, {
+        user_id,
+        service_id,
+        appointment_date,
+        start_time,
+        end_time,
+        status: 'booked', // Set status to "booked"
+      });
 
       if (result.affectedRows === 0) {
-        return res
-          .status(404)
-          .json({ error: "Appointment not found or no changes made." });
+        return res.status(404).json({ error: "Appointment not found or no changes made." });
       }
 
       return res.status(200).send("Appointment updated successfully.");
-    } 
+    } else {
+      // Create a new appointment if no existing appointment is found
+      const newAppointment = {
+        user_id,
+        service_id,
+        appointment_date,
+        start_time,
+        end_time,
+        status: 'booked', // Set status to "booked"
+      };
+
+      const [result] = await db.execute(
+        "INSERT INTO appointments (user_id, service_id, appointment_date, start_time, end_time, status) VALUES (?, ?, ?, ?, ?, ?)",
+        [user_id, service_id, appointment_date, start_time, end_time, 'booked']
+      );
+
+      if (result.affectedRows === 0) {
+        return res.status(500).json({ error: "Failed to create appointment." });
+      }
+
+      return res.status(201).send("Appointment created successfully.");
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
