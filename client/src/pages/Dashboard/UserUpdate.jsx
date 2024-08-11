@@ -8,6 +8,7 @@ import {
   Button,
   Notification,
   TextInput,
+  Divider,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 
@@ -20,6 +21,7 @@ function UpdateAppointment() {
   const [message, setMessage] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [availableTimes, setAvailableTimes] = useState([]);
+  const [currentServiceName, setCurrentServiceName] = useState("");
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -40,16 +42,30 @@ function UpdateAppointment() {
           `http://localhost:8000/api/appointments/${id}`
         );
         const appointment = response.data;
+
+        // Format the date to 'yyyy-MM-dd'
+        const formattedDate = new Date(appointment.appointment_date)
+          .toISOString()
+          .split("T")[0];
+
         setServiceId(appointment.service_id.toString());
-        setAppointmentDate(appointment.appointment_date);
+        setAppointmentDate(formattedDate);
         setAppointmentTime(appointment.start_time);
+
+        // Find the current service name
+        const currentService = services.find(
+          (service) => service.service_id.toString() === appointment.service_id.toString()
+        );
+        setCurrentServiceName(currentService ? currentService.service_name : "Unknown Service");
       } catch (error) {
         console.error("An error occurred while fetching appointment data:", error);
         setMessage("Failed to fetch appointment details.");
       }
     };
-    fetchAppointmentData();
-  }, [id]);
+    if (services.length) {
+      fetchAppointmentData();
+    }
+  }, [id, services]);
 
   useEffect(() => {
     const fetchAvailableAppointments = async () => {
@@ -118,7 +134,7 @@ function UpdateAppointment() {
   };
 
   const goBack = () => {
-    navigate(`/dashboard`);
+    navigate(`/dashboard/${id}`);
   };
 
   return (
@@ -131,6 +147,22 @@ function UpdateAppointment() {
           {message}
         </Notification>
       )}
+      
+      <Divider my="sm" />
+      <Text align="left" size="md">
+        <strong>Current Appointment Details:</strong>
+      </Text>
+      <Text align="left" size="sm">
+        Service: {currentServiceName}
+      </Text>
+      <Text align="left" size="sm">
+        Date: {appointmentDate}
+      </Text>
+      <Text align="left" size="sm">
+        Time: {startTime}
+      </Text>
+      <Divider my="sm" />
+
       <Select
         label="Service"
         placeholder="Select a service"

@@ -51,6 +51,7 @@ function BookAppointment() {
         ];
 
         setAvailableTimes(uniqueTimes);
+        console.log("Available Times:", uniqueTimes);
       } catch (error) {
         console.error(
           "An error occurred while fetching available times:",

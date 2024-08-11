@@ -6,7 +6,6 @@ const {
   updateAppointmentStatus,
   clearAppointmentUserInfo,
   findAppointmentByDateAndTime,
-  createAppointmentModel,
 } = require("../models/appointment.model");
 
 //get all appointments
@@ -97,14 +96,7 @@ const createAppointment = async (req, res) => {
       }
 
       return res.status(200).send("Appointment updated successfully.");
-    } else {
-      // Create new appointment if it doesn't exist
-      const result = await createAppointmentModel(newDetails);
-
-      return res
-        .status(201)
-        .send("Appointment created and booked successfully.");
-    }
+    } 
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -119,6 +111,7 @@ const getAvailableTimeSlots = async (req, res) => {
     res.status(500).send(error.toString());
   }
 };
+
 
 //update appointment
 const updateAppointmentController = async (req, res) => {

@@ -53,24 +53,6 @@ const findAppointmentByDateAndTime = async (appointment_date, start_time) => {
   return rows.length > 0 ? rows[0] : null;
 };
 
-// Create a new appointment (model function)
-const createAppointmentModel = async (details) => {
-  const {
-    user_id,
-    service_id,
-    appointment_date,
-    start_time,
-    end_time,
-    status,
-  } = details;
-
-  const [result] = await db.execute(
-    "INSERT INTO appointments (user_id, service_id, appointment_date, start_time, end_time, status) VALUES (?, ?, ?, ?, ?, ?)",
-    [user_id, service_id, appointment_date, start_time, end_time, status]
-  );
-
-  return result;
-};
 /*
  end of create appointment
 */
@@ -88,6 +70,7 @@ const getAllAvailableAppointments = async () => {
     throw new Error(error.message);
   }
 };
+
 
 //update appointment status
 const updateAppointmentStatus = async (id, details) => {
@@ -169,5 +152,4 @@ module.exports = {
   updateAppointmentStatus,
   clearAppointmentUserInfo,
   findAppointmentByDateAndTime,
-  createAppointmentModel
 };
