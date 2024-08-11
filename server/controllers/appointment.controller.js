@@ -55,53 +55,6 @@ const getAppointmentsByUserId = async (req, res) => {
   }
 };
 
-//create appointment
-// const createAppointment = async (req, res) => {
-//   try {
-//     const { user_id, service_id, appointment_date, start_time, end_time } =
-//       req.body;
-
-//     if (!appointment_date || !start_time) {
-//       return res
-//         .status(400)
-//         .json({ error: "Date and start time are required" });
-//     }
-
-//     // Check if an appointment already exists for the given date and time
-//     const existingAppointment = await findAppointmentByDateAndTime(
-//       appointment_date,
-//       start_time
-//     );
-
-//     const newDetails = {
-//       user_id,
-//       service_id,
-//       appointment_date,
-//       start_time,
-//       end_time,
-//       status: "booked", // Set status to "booked"
-//     };
-
-//     if (existingAppointment) {
-//       // Update existing appointment
-//       const result = await updateAppointmentStatus(
-//         existingAppointment.id,
-//         newDetails
-//       );
-
-//       if (result.affectedRows === 0) {
-//         return res
-//           .status(404)
-//           .json({ error: "Appointment not found or no changes made." });
-//       }
-
-//       return res.status(200).send("Appointment updated successfully.");
-//     } 
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
 const createAppointment = async (req, res) => {
   try {
     const { user_id, service_id, appointment_date, start_time, end_time } = req.body;
