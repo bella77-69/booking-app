@@ -2,13 +2,11 @@ const {
   getAllAppointments,
   findAppointmentById,
   getAppointmentsForUser,
-  getServiceById,
-  isTimeAvailable,
-  addAppointment,
-  updateAppointment,
   getAllAvailableAppointments,
   updateAppointmentStatus,
   clearAppointmentUserInfo,
+  findAppointmentByDateAndTime,
+  createAppointmentModel,
 } = require("../models/appointment.model");
 
 //get all appointments
@@ -60,54 +58,55 @@ const getAppointmentsByUserId = async (req, res) => {
 
 //create appointment
 const createAppointment = async (req, res) => {
-  const { user_id, service_id, appointment_date, start_time } = req.body;
-
   try {
-    // Fetch the service duration
-    const service = await getServiceById(service_id);
-    const service_duration = service.service_duration;
+    const { user_id, service_id, appointment_date, start_time, end_time } =
+      req.body;
 
-    // Calculate the end time
-    const startTime = new Date(`1970-01-01T${start_time}Z`);
-    const endTime = new Date(startTime.getTime() + service_duration * 60000);
-    const end_time = endTime.toISOString().substr(11, 8); // Format HH:MM:SS
-
-    // Check if the time slot is available
-    const available = await isTimeAvailable(
-      appointment_date,
-      start_time,
-      end_time
-    );
-
-    if (!available) {
+    if (!appointment_date || !start_time) {
       return res
         .status(400)
-        .json({ message: "The selected time slot is not available." });
+        .json({ error: "Date and start time are required" });
     }
 
-    // Create the appointment
-    const result = await addAppointment({
+    // Check if an appointment already exists for the given date and time
+    const existingAppointment = await findAppointmentByDateAndTime(
+      appointment_date,
+      start_time
+    );
+
+    const newDetails = {
       user_id,
       service_id,
       appointment_date,
       start_time,
       end_time,
-    });
+      status: "booked", // Set status to "booked"
+    };
 
-    const appointmentId = result.insertId;
+    if (existingAppointment) {
+      // Update existing appointment
+      const result = await updateAppointmentStatus(
+        existingAppointment.id,
+        newDetails
+      );
 
-    // Update the status to 'booked'
-    await updateAppointment(appointmentId, "booked");
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ error: "Appointment not found or no changes made." });
+      }
 
-    res.status(201).json({
-      message: "Appointment created successfully.",
-      appointmentId: appointmentId,
-    });
+      return res.status(200).send("Appointment updated successfully.");
+    } else {
+      // Create new appointment if it doesn't exist
+      const result = await createAppointmentModel(newDetails);
+
+      return res
+        .status(201)
+        .send("Appointment created and booked successfully.");
+    }
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while creating the appointment." });
+    res.status(500).json({ error: error.message });
   }
 };
 

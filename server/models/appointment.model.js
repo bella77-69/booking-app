@@ -19,22 +19,22 @@ const findAppointmentById = async (id) => {
 const getAppointmentsForUser = async (user_id) => {
   const [rows] = await db.execute(
     `SELECT 
-    Appointments.id AS id,
+    appointments.id AS id,
         Users.full_name AS user_name,
         Users.email AS user_email,
         Services.service_name,
         Services.service_price,
         Services.service_duration,
         Services.description,
-        Appointments.appointment_date,
-        Appointments.start_time,
-        Appointments.status
+        appointments.appointment_date,
+        appointments.start_time,
+        appointments.status
      FROM 
-        Appointments
+        appointments
      JOIN 
-        Users ON Appointments.user_id = Users.user_id
+        Users ON appointments.user_id = Users.user_id
      JOIN 
-        Services ON Appointments.service_id = Services.service_id
+        Services ON appointments.service_id = Services.service_id
      WHERE 
         Users.user_id = ?`,
     [user_id]
@@ -42,79 +42,38 @@ const getAppointmentsForUser = async (user_id) => {
   return rows;
 };
 
-/* create appointment */
-// Function to get service details by ID
-const getServiceById = async (service_id) => {
-  try {
-    const [rows] = await db.execute(
-      `
-      SELECT service_duration FROM services WHERE service_id = ?
-    `,
-      [service_id]
-    );
-
-    if (rows.length === 0) {
-      throw new Error("Service not found");
-    }
-
-    return rows[0];
-  } catch (error) {
-    throw new Error(error.message);
-  }
+/* 
+create appointment 
+*/
+const findAppointmentByDateAndTime = async (appointment_date, start_time) => {
+  const [rows] = await db.execute(
+    "SELECT * FROM appointments WHERE appointment_date = ? AND start_time = ?",
+    [appointment_date, start_time]
+  );
+  return rows.length > 0 ? rows[0] : null;
 };
 
-/* create appointment */
-const isTimeAvailable = async (appointment_date, start_time, end_time) => {
-  const query = `
-    SELECT * FROM appointments 
-    WHERE appointment_date = ? 
-    AND (
-      (start_time < ? AND end_time > ?) 
-      OR (start_time < ? AND end_time > ?)
-    )
-    AND status = 'booked'
-  `;
-  const [rows] = await db.execute(query, [
+// Create a new appointment (model function)
+const createAppointmentModel = async (details) => {
+  const {
+    user_id,
+    service_id,
     appointment_date,
-    end_time,
     start_time,
     end_time,
-    start_time,
-  ]);
-  return rows.length === 0; // returns true if no overlapping appointments
-};
+    status,
+  } = details;
 
-/* create appointment */
-const addAppointment = async (appointment) => {
-  const query = `
-      INSERT INTO appointments (user_id, service_id, appointment_date, status, start_time, end_time)
-      VALUES (?, ?, ?, ?, ?, ?)
-  `;
-  const values = [
-    appointment.user_id,
-    appointment.service_id,
-    appointment.appointment_date,
-    "booked",
-    appointment.start_time,
-    appointment.end_time,
-  ];
-  const [result] = await db.execute(query, values);
+  const [result] = await db.execute(
+    "INSERT INTO appointments (user_id, service_id, appointment_date, start_time, end_time, status) VALUES (?, ?, ?, ?, ?, ?)",
+    [user_id, service_id, appointment_date, start_time, end_time, status]
+  );
+
   return result;
 };
-
-/* create appointment */
-const updateAppointment = async (id, status) => {
-  const query = `
-    UPDATE appointments
-    SET status = ?
-    WHERE id = ?
-  `;
-  const values = [status, id];
-  const [result] = await db.execute(query, values);
-  if (result.affectedRows === 0) {
-    throw new Error('Failed to update appointment status');
-  }
-};
+/*
+ end of create appointment
+*/
 
 //get available time slots
 const getAllAvailableAppointments = async () => {
@@ -206,11 +165,9 @@ module.exports = {
   getAllAppointments,
   findAppointmentById,
   getAppointmentsForUser,
-  getServiceById,
-  isTimeAvailable,
-  addAppointment,
-  updateAppointment,
   getAllAvailableAppointments,
   updateAppointmentStatus,
   clearAppointmentUserInfo,
+  findAppointmentByDateAndTime,
+  createAppointmentModel
 };
