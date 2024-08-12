@@ -24,6 +24,7 @@ function Dashboard() {
           }
         );
         setAppointments(response.data.appointments);
+       
         console.log("Appointments data:", response.data.appointments);
       } catch (error) {
         console.error("Failed to fetch appointments:", error);
@@ -49,7 +50,7 @@ function Dashboard() {
   const user_id = localStorage.getItem("userId");
   return (
     <Container size={700} className={classes.wrapper}>
-      <Title order={1}>Welcome to Dashboard</Title>
+      <Title order={1} style={{textAlign: "center"}}>Dashboard</Title>
       <Button
         fullWidth
         variant="default"
@@ -75,7 +76,7 @@ function Dashboard() {
                 <Text>Time: {appointment.start_time}</Text>
                   <Text>Duration: {appointment.service_duration}</Text>
                 <br />
-                <Button
+                {/* <Button
                   variant="outline"
                   color="blue"
                   onClick={() =>
@@ -83,7 +84,7 @@ function Dashboard() {
                   }
                 >
                   Update Appointment
-                </Button>
+                </Button> */}
                 <Button
                   variant="outline"
                   color="red"
@@ -98,19 +99,6 @@ function Dashboard() {
           ))}
         </div>
       )}
-
-      <Button
-        variant="default"
-        radius="xl"
-        size="md"
-        onClick={() => {
-          localStorage.removeItem("token");
-          window.location.href = "/login";
-        }}
-        style={{ marginTop: "20px" }}
-      >
-        Logout
-      </Button>
     </Container>
   );
 }

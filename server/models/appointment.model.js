@@ -53,25 +53,6 @@ const findAppointmentByDateAndTime = async (appointment_date, start_time) => {
   return rows.length > 0 ? rows[0] : null;
 };
 
-/*
- end of create appointment
-*/
-
-//get available time slots
-const getAllAvailableAppointments = async () => {
-  try {
-    const [rows] = await db.execute(`
-      SELECT * FROM appointments
-      WHERE status = 'available'
-      ORDER BY appointment_date, start_time
-    `);
-    return rows;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-
 //update appointment status
 const updateAppointmentStatus = async (id, details) => {
   try {
@@ -125,6 +106,23 @@ const updateAppointmentStatus = async (id, details) => {
     throw new Error(error.message);
   }
 };
+/*
+ end of create appointment
+*/
+
+//get available time slots
+const getAllAvailableAppointments = async () => {
+  try {
+    const [rows] = await db.execute(`
+      SELECT * FROM appointments
+      WHERE status = 'available'
+      ORDER BY appointment_date, start_time
+    `);
+    return rows;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 //delete request to delete an appointment
 const clearAppointmentUserInfo = async (id) => {
@@ -148,8 +146,8 @@ module.exports = {
   getAllAppointments,
   findAppointmentById,
   getAppointmentsForUser,
-  getAllAvailableAppointments,
-  updateAppointmentStatus,
-  clearAppointmentUserInfo,
   findAppointmentByDateAndTime,
+  updateAppointmentStatus,
+  getAllAvailableAppointments,
+  clearAppointmentUserInfo,
 };

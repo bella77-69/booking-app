@@ -1,4 +1,4 @@
-.wrapper {
+/* .wrapper {
     padding-top: rem(80px);
     padding-bottom: rem(50px);
   }
@@ -6,4 +6,23 @@
   
   .avatar {
     border: rem(2px) solid var(--mantine-color-body);
+  } */
+
+  .wrapper {
+    padding-top: rem(80px);
+    padding-bottom: rem(50px);
   }
+  
+  /* .card {
+    transition: transform 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.02);
+  } */
+  
+  button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
