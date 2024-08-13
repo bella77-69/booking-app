@@ -1,25 +1,30 @@
 const db = require("../config/db.config");
 
+
 const getAllAppointments = async () => {
-    const [rows] = await db.execute(`
-        SELECT 
-          a.id as booking_id,
-          u.username as username,
-          u.email as email,
-          u.full_name as full_name,
-          u.phone_number as phone_number,
-          s.service_name as service_name,
-          s.service_price as service_price,
-            s.service_duration as service_duration,
-          a.booking_date,
-          a.booking_start_time,
-          a.status
-        FROM appointments a
-        JOIN users u ON a.user_id = u.user_id
-        JOIN services s ON a.service_id = s.service_id
-    `);
-    return rows;
+  const [rows] = await db.execute(`
+      SELECT 
+        a.id as booking_id,
+        u.username as username,
+        u.email as email,
+        u.full_name as full_name,
+        u.phone_number as phone_number,
+        s.service_name as service_name,
+        s.service_price as service_price,
+        s.service_duration as service_duration,
+        a.appointment_date,
+        a.start_time,
+        a.end_time,
+        a.status
+      FROM appointments a
+      JOIN users u ON a.user_id = u.user_id
+      JOIN services s ON a.service_id = s.service_id
+      WHERE a.status = 'booked'
+  `);
+  return rows;
 };
+
+
 
 // post request to populate appointments
 const populateAppointments = async () => {
