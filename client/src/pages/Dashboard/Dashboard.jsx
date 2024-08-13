@@ -75,6 +75,7 @@ function Dashboard() {
                 <Text>Date: {formatDate(appointment.appointment_date)}</Text>
                 <Text>Time: {appointment.start_time}</Text>
                   <Text>Duration: {appointment.service_duration}</Text>
+                  <Text>Status: {appointment.status}</Text>
                 <br />
                 {/* <Button
                   variant="outline"

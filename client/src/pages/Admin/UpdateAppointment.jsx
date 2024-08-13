@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, TextInput, Button, Select } from "@mantine/core";
+import { Container, TextInput, Button, Select, Notification } from "@mantine/core";
 import axios from "axios";
+import { showNotification } from "@mantine/notifications";
 
 const UpdateAppointment = () => {
   const { id } = useParams();
@@ -26,7 +27,7 @@ const UpdateAppointment = () => {
         const data = response.data;
         setAppointment({
           user_id: data.user_id,
-          service_id: data.service_id.toString(), // Convert to string
+          service_id: data.service_id.toString(),
           appointment_date: new Date(data.appointment_date)
             .toISOString()
             .slice(0, 16),
@@ -34,7 +35,7 @@ const UpdateAppointment = () => {
         });
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to fetch appointment details.");
         setLoading(false);
       }
     };
@@ -44,7 +45,7 @@ const UpdateAppointment = () => {
         const response = await axios.get("http://localhost:8000/api/services");
         setServices(response.data);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to fetch services.");
       }
     };
 
@@ -70,7 +71,7 @@ const UpdateAppointment = () => {
   const handleServiceChange = (value) => {
     setAppointment((prevAppointment) => ({
       ...prevAppointment,
-      service_id: value, // The value will be a string
+      service_id: value,
     }));
   };
 
@@ -79,16 +80,20 @@ const UpdateAppointment = () => {
     try {
       const appointmentData = {
         ...appointment,
-        service_id: parseInt(appointment.service_id, 10), // Convert back to number
+        service_id: parseInt(appointment.service_id, 10),
       };
       await axios.put(
         `http://localhost:8000/api/appointments/${id}`,
         appointmentData
       );
-      alert("Appointment updated successfully!");
+      showNotification({
+        title: "Success",
+        message: "Appointment updated successfully!",
+        color: "green",
+      });
       navigate(`/admin-dashboard/${appointment.user_id}`);
     } catch (err) {
-      setError(err.message);
+      setError("Failed to update the appointment.");
     }
   };
 
@@ -97,7 +102,11 @@ const UpdateAppointment = () => {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <Notification color="red" title="Error">
+        {error}
+      </Notification>
+    );
   }
 
   const backToAdminDashboard = () => {
@@ -114,6 +123,7 @@ const UpdateAppointment = () => {
             value={appointment.user_id}
             onChange={handleChange}
             required
+            disabled
           />
         </div>
         <div>

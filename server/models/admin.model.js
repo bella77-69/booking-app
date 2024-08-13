@@ -1,6 +1,5 @@
 const db = require("../config/db.config");
 
-
 const getAllAppointments = async () => {
   const [rows] = await db.execute(`
       SELECT 
@@ -19,10 +18,11 @@ const getAllAppointments = async () => {
       FROM appointments a
       JOIN users u ON a.user_id = u.user_id
       JOIN services s ON a.service_id = s.service_id
-      WHERE a.status = 'booked'
+      WHERE a.status IN ('booked', 'confirmed', 'cancelled')
   `);
   return rows;
 };
+
 
 
 

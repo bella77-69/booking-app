@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Button, Text } from "@mantine/core";
+import { Container, Button, Text, Notification } from "@mantine/core";
 import axios from "axios";
 
 const DeleteAppointment = () => {
@@ -29,9 +29,9 @@ const DeleteAppointment = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/appointments/${id}`);
+      await axios.delete(`http://localhost:8000/api/appointments/delete/${id}`);
       alert("Appointment deleted successfully!");
-      navigate(`/admin-dashboard/${id}`);
+      navigate(`/admin-dashboard/${appointment.user_id}`);
     } catch (err) {
       setError(err.message);
     }
@@ -42,15 +42,23 @@ const DeleteAppointment = () => {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <Notification color="red" title="Error">
+        {error}
+      </Notification>
+    );
   }
 
   if (!appointment) {
-    return <p>Appointment not found.</p>;
+    return (
+      <Notification color="red" title="Error">
+        Appointment not found.
+      </Notification>
+    );
   }
 
   const backToAdminDashboard = () => {
-    navigate(`/admin-dashboard/${id}`);
+    navigate(`/admin-dashboard/${appointment.user_id}`);
   };
 
   return (

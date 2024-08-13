@@ -132,12 +132,17 @@ const updateAppointmentController = async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
-      return res.status(400).json({ error: "Invalid appointment ID" });
+      return res.status(400).json({ error: "Invalid appointment ID." });
     }
 
     const updatedDetails = req.body;
 
-    const result = await updateAppointmentModel(id, updatedDetails);
+    // Ensure there's something to update
+    if (Object.keys(updatedDetails).length === 0) {
+      return res.status(400).json({ error: "No update details provided." });
+    }
+
+    const result = await updateAppointmentStatus(id, updatedDetails);
 
     if (result.affectedRows === 0) {
       return res
@@ -145,11 +150,13 @@ const updateAppointmentController = async (req, res) => {
         .json({ error: "Appointment not found or no changes made." });
     }
 
-    res.status(200).send("Appointment updated successfully.");
+    res.status(200).json({ message: "Appointment updated successfully." });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Update appointment error:", error);
+    res.status(500).json({ error: "An error occurred while updating the appointment." });
   }
 };
+
 
 //delete appointment
 const deleteController = async (req, res) => {
