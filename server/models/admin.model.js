@@ -4,6 +4,7 @@ const getAllAppointments = async () => {
   const [rows] = await db.execute(`
       SELECT 
         a.id as booking_id,
+        u.user_id as user_id,
         u.username as username,
         u.email as email,
         u.full_name as full_name,

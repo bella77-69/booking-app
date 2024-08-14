@@ -14,6 +14,7 @@ import UpdateAppointment from "./pages/Admin/UpdateAppointment";
 import Register from "./pages/Login/RegisterPage";
 import DeleteRequest from "./pages/Dashboard/DeleteRequest";
 import UserUpdate from "./pages/Dashboard/UserUpdate";
+import AppointmentDetails from "./pages/Admin/AppointmentDetails";
 
 function App() {
   return (
@@ -23,13 +24,17 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path='/register' element={<Register/>} />
+          <Route path="/register" element={<Register />} />
 
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
+          <Route path="/admin-dashboard" exact element={<AdminDashboard />} />
           <Route
-            path="/admin-dashboard/:userId"
-            exact
-            element={<AdminDashboard />}
+            path="/admin/appointment-details/:id"
+            element={<AppointmentDetails />}
+          />
+          <Route
+            path="/admin/delete-appointment/:id"
+            element={<DeleteAppointment />}
           />
           <Route
             path="/admin/update-appointment/:id"
@@ -37,14 +42,13 @@ function App() {
           />
           <Route path="/book-appointment/:id" element={<BookAppointment />} />
 
+          <Route path="/update-appointment/:id" element={<UserUpdate />} />
           <Route
-            path="/admin/delete-appointment/:id"
-            element={<DeleteAppointment />}
+            path="/delete-appointment/:user_id/:id"
+            element={<DeleteRequest />}
           />
-      <Route path='/update-appointment/:id' element={<UserUpdate/>} />
-          <Route path="/delete-appointment/:user_id/:id" element={<DeleteRequest />} />
         </Routes>
-      
+
         <Footer />
       </BrowserRouter>
     </MantineProvider>

@@ -20,6 +20,7 @@ const getAppointmentsForUser = async (user_id) => {
   const [rows] = await db.execute(
     `SELECT 
     appointments.id AS id,
+        Users.user_id AS user_id,
         Users.full_name AS user_name,
         Users.email AS user_email,
         Services.service_name,

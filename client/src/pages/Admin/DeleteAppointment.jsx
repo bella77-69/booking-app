@@ -58,7 +58,7 @@ const DeleteAppointment = () => {
   }
 
   const backToAdminDashboard = () => {
-    navigate(`/admin-dashboard/${appointment.user_id}`);
+    navigate(`/admin-dashboard`);
   };
 
   return (

@@ -49,7 +49,8 @@ function Login() {
 
         // Redirect based on user role
         if (user.role.toLowerCase() === 'admin') {
-          window.location.href = `/admin-dashboard/${user.user_id}`;
+          window.location.href = `/admin-dashboard`;
+          // window.location.href = `/admin-dashboard/${user.user_id}`;
         } else {
           window.location.href = `/dashboard/${user.user_id}`;
         }

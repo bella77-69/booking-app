@@ -16,7 +16,7 @@ const UpdateAppointment = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const allowedStatuses = ["Scheduled", "Confirmed", "Completed", "Cancelled"];
+  const allowedStatuses = ['Available', 'Booked', 'Scheduled', 'Confirmed', 'Completed', 'Cancelled']
 
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -110,7 +110,7 @@ const UpdateAppointment = () => {
   }
 
   const backToAdminDashboard = () => {
-    navigate(`/admin-dashboard/${appointment.user_id}`);
+    navigate(`/admin-dashboard/`);
   };
 
   return (
