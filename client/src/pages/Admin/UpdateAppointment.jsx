@@ -1,181 +1,152 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Container, TextInput, Button, Select, Notification } from "@mantine/core";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { showNotification } from "@mantine/notifications";
+import { useParams, useNavigate } from "react-router-dom";
+import { Container, Text, Title, Paper, Loader, Button, TextInput, Select } from "@mantine/core";
 
 const UpdateAppointment = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState({
-    user_id: "",
-    service_id: "",
-    appointment_date: "",
-    status: "Scheduled",
-  });
+  const [appointment, setAppointment] = useState(null);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const allowedStatuses = ['Available', 'Booked', 'Scheduled', 'Confirmed', 'Completed', 'Cancelled']
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    service_id: "",
+    appointment_date: "",
+    start_time: "",
+    status: "",
+  });
 
   useEffect(() => {
-    const fetchAppointment = async () => {
+    const fetchAppointmentDetails = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8000/api/appointments/${id}`
         );
-        const data = response.data;
-        setAppointment({
-          user_id: data.user_id,
-          service_id: data.service_id.toString(),
-          appointment_date: new Date(data.appointment_date)
-            .toISOString()
-            .slice(0, 16),
-          status: data.status,
+        setAppointment(response.data);
+        setFormData({
+          service_id: response.data.service_id,
+          appointment_date: new Date(response.data.appointment_date).toISOString().slice(0, 10), // format as YYYY-MM-DD
+          start_time: response.data.start_time,
+          status: response.data.status,
         });
+
+        const servicesResponse = await axios.get("http://localhost:8000/api/services");
+        setServices(servicesResponse.data);
+
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch appointment details.");
+        setError("Failed to fetch appointment or service details.");
         setLoading(false);
       }
     };
 
-    const fetchServices = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/services");
-        setServices(response.data);
-      } catch (err) {
-        setError("Failed to fetch services.");
-      }
-    };
-
-    fetchAppointment();
-    fetchServices();
+    fetchAppointmentDetails();
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAppointment((prevAppointment) => ({
-      ...prevAppointment,
-      [name]: value,
-    }));
-  };
-
-  const handleStatusChange = (value) => {
-    setAppointment((prevAppointment) => ({
-      ...prevAppointment,
-      status: value,
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleServiceChange = (value) => {
-    setAppointment((prevAppointment) => ({
-      ...prevAppointment,
+    setFormData({
+      ...formData,
       service_id: value,
-    }));
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const appointmentData = {
-        ...appointment,
-        service_id: parseInt(appointment.service_id, 10),
-      };
-      await axios.put(
-        `http://localhost:8000/api/appointments/${id}`,
-        appointmentData
-      );
-      showNotification({
-        title: "Success",
-        message: "Appointment updated successfully!",
-        color: "green",
-      });
-      navigate(`/admin-dashboard/${appointment.user_id}`);
+      await axios.put(`http://localhost:8000/api/appointments/${id}`, formData);
+      navigate(`/admin-dashboard`);
     } catch (err) {
       setError("Failed to update the appointment.");
     }
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loader size="xl" />;
   }
 
   if (error) {
-    return (
-      <Notification color="red" title="Error">
-        {error}
-      </Notification>
-    );
+    return <Text color="red">{error}</Text>;
   }
-
-  const backToAdminDashboard = () => {
-    navigate(`/admin-dashboard/`);
-  };
 
   return (
     <Container size={700}>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <TextInput
-            label="User ID"
-            name="user_id"
-            value={appointment.user_id}
-            onChange={handleChange}
-            required
-            disabled
-          />
-        </div>
-        <div>
+      <Title order={2}>Update Appointment</Title>
+      <Paper style={{ padding: "15px" }}>
+        <form onSubmit={handleSubmit}>
           <Select
             label="Service"
-            name="service_id"
+            placeholder="Select a service"
             data={services.map((service) => ({
               value: service.service_id.toString(),
               label: service.service_name,
             }))}
-            value={appointment.service_id}
+            value={formData.service_id}
             onChange={handleServiceChange}
             required
           />
-        </div>
-        <div>
+
+  <TextInput
+  label="Appointment Date"
+  placeholder="YYYY-MM-DD"
+  name="appointment_date"
+  value={formData.appointment_date}
+  onChange={handleChange}
+  required
+  />
+
           <TextInput
-            label="Appointment Date"
-            name="appointment_date"
-            type="datetime-local"
-            value={appointment.appointment_date}
+            label="Start Time"
+            placeholder="HH:MM"
+            name="start_time"
+            value={formData.start_time}
             onChange={handleChange}
             required
           />
-        </div>
-        <div>
+
           <Select
             label="Status"
+            placeholder="Select a status"
+            data={[
+              { value: "Pending", label: "Pending" },
+              { value: "Confirmed", label: "Confirmed" },
+              { value: "Cancelled", label: "Cancelled" },
+            ]}
             name="status"
-            data={allowedStatuses.map((status) => ({
-              value: status,
-              label: status,
-            }))}
-            value={appointment.status}
-            onChange={handleStatusChange}
+            value={formData.status}
+            onChange={(value) =>
+              setFormData({
+                ...formData,
+                status: value,
+              })
+            }
             required
           />
-        </div>
-        <Button type="submit" fullWidth style={{ marginTop: "20px" }}>
-          Update Appointment
-        </Button>
+
+          <Button type="submit" color="blue" fullWidth style={{ marginTop: "20px" }}>
+            Update Appointment
+          </Button>
+        </form>
+
         <Button
           color="red"
           fullWidth
           style={{ marginTop: "10px" }}
-          onClick={backToAdminDashboard}
+          onClick={() => navigate(`/admin-dashboard`)}
         >
           Cancel
         </Button>
-      </form>
+      </Paper>
     </Container>
   );
 };
 
 export default UpdateAppointment;
+

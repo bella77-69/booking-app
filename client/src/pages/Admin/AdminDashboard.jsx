@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, Text, Button, Container, Title, Paper, Loader } from "@mantine/core";
-import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import {
+  Container,
+  Title,
+  Text,
+  Loader,
+} from "@mantine/core";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./calendarStyles.css"; // Import your custom CSS
 
 const AdminDashboard = () => {
-  const [appointment, setAppointment] = useState([]);
+  const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  
   const localizer = momentLocalizer(moment);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseAppointments = await axios.get("http://localhost:8000/api/admin");
-        setAppointment(responseAppointments.data);
-        console.log("Appointments data:", responseAppointments.data);
+        const responseAppointments = await axios.get(
+          "http://localhost:8000/api/admin"
+        );
+        setAppointments(responseAppointments.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -33,7 +39,6 @@ const AdminDashboard = () => {
     return <Loader size="xl" />;
   }
 
-
   // Function to combine date and time into a Date object
   const combineDateAndTime = (dateString, timeString) => {
     const [hours, minutes] = timeString.split(":").map(Number);
@@ -43,19 +48,22 @@ const AdminDashboard = () => {
   };
 
   // Transforming appointment data for the calendar
-  const events = appointment.map(appointments => {
-    const start = combineDateAndTime(appointments.appointment_date, appointments.start_time);
-    
+  const events = appointments.map((appointment) => {
+    const start = combineDateAndTime(
+      appointment.appointment_date,
+      appointment.start_time
+    );
+
     // Assuming the appointment duration is 1 hour for simplicity
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
     return {
-      id: appointments.booking_id,
-      title: `${appointments.service_name} - ${appointments.full_name}`,
+      id: appointment.booking_id,
+      title: `${appointment.service_name} - ${appointment.full_name}`,
       start,
       end,
       allDay: false,
-      resource: appointments
+      resource: appointment,
     };
   });
 
@@ -64,7 +72,7 @@ const AdminDashboard = () => {
       <Title order={1}>Admin Dashboard</Title>
       <div>
         <h2>Booked Appointments</h2>
-        {appointment.length === 0 ? (
+        {appointments.length === 0 ? (
           <Text>No booked appointments available.</Text>
         ) : (
           <div>
@@ -76,7 +84,9 @@ const AdminDashboard = () => {
               style={{ height: 500 }}
               min={new Date(2024, 0, 1, 9, 0)} // Start time at 9:00 AM
               max={new Date(2024, 0, 1, 18, 0)} // End time at 6:00 PM
-              onSelectEvent={event => navigate(`/admin/appointment-details/${event.id}`)}
+              onSelectEvent={(event) =>
+                navigate(`/admin/appointment-details/${event.id}`)
+              }
             />
           </div>
         )}

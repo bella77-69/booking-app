@@ -31,7 +31,7 @@ const DeleteAppointment = () => {
     try {
       await axios.delete(`http://localhost:8000/api/appointments/delete/${id}`);
       alert("Appointment deleted successfully!");
-      navigate(`/admin-dashboard/${appointment.user_id}`);
+      navigate(`/admin-dashboard/`);
     } catch (err) {
       setError(err.message);
     }

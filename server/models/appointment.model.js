@@ -6,11 +6,42 @@ const getAllAppointments = async () => {
   return rows;
 };
 
-//get appointment by id
+// //get appointment by id
+// const findAppointmentById = async (id) => {
+//   const [rows] = await db.execute("SELECT * FROM appointments WHERE id = ?", [
+//     id,
+//   ]);
+//   if (rows.length === 0) throw new Error("Appointment not found");
+//   return rows[0];
+// };
+
 const findAppointmentById = async (id) => {
-  const [rows] = await db.execute("SELECT * FROM appointments WHERE id = ?", [
-    id,
-  ]);
+  const [rows] = await db.execute(
+    `SELECT 
+      appointments.id AS id,
+      Users.user_id AS user_id,
+      Users.full_name AS full_name,
+      Users.username AS username,
+      Users.email AS user_email,
+      Users.phone_number AS phone_number,
+      Services.service_name,
+      Services.service_price,
+      Services.service_duration,
+      Services.description,
+      appointments.appointment_date,
+      appointments.start_time,
+      appointments.status
+    FROM 
+      appointments
+    JOIN 
+      Users ON appointments.user_id = Users.user_id
+    JOIN 
+      Services ON appointments.service_id = Services.service_id
+    WHERE 
+      appointments.id = ?`,
+    [id]
+  );
+  
   if (rows.length === 0) throw new Error("Appointment not found");
   return rows[0];
 };

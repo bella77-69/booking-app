@@ -1,0 +1,45 @@
+/* calendarStyles.css */
+
+/* Global calendar styles */
+.rbc-calendar {
+  background-color: #f2f2f2; /* Dark background */
+  color: #000000; /* Light text color */
+  border-radius: 8px;
+}
+
+/* Calendar header styles */
+.rbc-toolbar {
+  background-color: #d1d1d1;
+  color: #000000;
+  border-bottom: 1px solid #444;
+}
+
+/* Calendar event styles */
+.rbc-event {
+  background-color: #003a9f;
+  color: #FFFFFF;
+  border: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Selected event style */
+.rbc-event:focus,
+.rbc-event:hover {
+  background-color: #505357;
+}
+
+/* Time slot styles */
+.rbc-time-slot {
+  border-color: #444;
+}
+
+/* Date labels (e.g., for month view) */
+.rbc-date-cell {
+  color: #000000;
+}
+
+/* Grid lines */
+.rbc-timeslot-group {
+  border-color: #444;
+}
