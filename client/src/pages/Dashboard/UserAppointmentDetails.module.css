@@ -1,0 +1,51 @@
+.container {
+    margin-top: 40px;
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.paper {
+    padding: 25px;
+    /* background-color: #ffffff; */
+    border-radius: 10px;
+    border: 1px solid light-dark(inherit, var(--mantine-color-white));
+}
+
+.serviceName {
+    font-size: 1.5rem;
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+    /* color: #242424; */
+}
+
+.services {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.icons {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.group {
+    margin-bottom: 10px;
+}
+
+
+.button {
+    padding-left: rem(50px);
+    padding-right: rem(50px);
+    font-family:
+        Greycliff CF,
+        var(--mantine-font-family);
+
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+}

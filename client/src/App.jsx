@@ -15,7 +15,7 @@ import Register from "./pages/Login/RegisterPage";
 import DeleteRequest from "./pages/Dashboard/DeleteRequest";
 import UserUpdate from "./pages/Dashboard/UserUpdate";
 import AppointmentDetails from "./pages/Admin/AppointmentDetails";
-
+import UserAppointmentDetails from "./pages/Dashboard/UserAppointmentDetails";
 function App() {
   return (
     <MantineProvider>
@@ -27,6 +27,7 @@ function App() {
           <Route path="/register" element={<Register />} />
 
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
+          <Route path="/user/appointment-details/:id" element={<UserAppointmentDetails />} />
           <Route path="/admin-dashboard" exact element={<AdminDashboard />} />
           <Route
             path="/admin/appointment-details/:id"
