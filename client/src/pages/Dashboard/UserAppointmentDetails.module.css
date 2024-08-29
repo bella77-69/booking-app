@@ -1,8 +1,10 @@
 .container {
     margin-top: 40px;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+    border: 1px solid light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
+    box-shadow: var(--paper-shadow-1);
 }
 
 .title {
@@ -13,15 +15,13 @@
 
 .paper {
     padding: 25px;
-    /* background-color: #ffffff; */
-    border-radius: 10px;
-    border: 1px solid light-dark(inherit, var(--mantine-color-white));
+    /* border: 1px solid light-dark(inherit, var(--mantine-color-white)); */
+    box-shadow: none;
 }
 
 .serviceName {
     font-size: 1.5rem;
     color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    /* color: #242424; */
 }
 
 .services {
@@ -36,14 +36,12 @@
     margin-bottom: 10px;
 }
 
-
 .button {
     padding-left: rem(50px);
     padding-right: rem(50px);
     font-family:
         Greycliff CF,
         var(--mantine-font-family);
-
 
     @media (max-width: 768px) {
         width: 100%;

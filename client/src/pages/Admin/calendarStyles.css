@@ -1,17 +1,17 @@
-.rbc-calendar {
-  background-color: #f2f2f2; /* Dark background */
-  color: #000000; /* Light text color */
+/* .rbc-calendar {
+  background-color: #f2f2f2; 
+  color: #000000; 
   border-radius: 8px;
 }
 
-/* Calendar header styles */
+
 .rbc-toolbar {
   background-color: #d1d1d1;
   color: #000000;
   border-bottom: 1px solid #444;
 }
 
-/* Calendar event styles */
+
 .rbc-event {
   background-color: #003a9f;
   color: #FFFFFF;
@@ -20,23 +20,66 @@
   border-radius: 4px;
 }
 
-/* Selected event style */
+
 .rbc-event:focus,
 .rbc-event:hover {
   background-color: #505357;
 }
 
-/* Time slot styles */
+
 .rbc-time-slot {
   border-color: #444;
 }
 
-/* Date labels (e.g., for month view) */
+
 .rbc-date-cell {
   color: #000000;
 }
 
-/* Grid lines */
+
 .rbc-timeslot-group {
   border-color: #444;
+} */
+
+.rbc-calendar {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  border-radius: 8px;
+}
+
+/* Calendar header styles */
+.rbc-toolbar {
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-1));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
+}
+
+/* Calendar event styles */
+.rbc-event {
+  background-color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-blue-7));
+  color: var(--mantine-color-white);
+  border: none;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* Selected event style */
+.rbc-event:focus,
+.rbc-event:hover {
+  background-color: light-dark(var(--mantine-color-dark-3), var(--mantine-color-dark-5));
+}
+
+/* Time slot styles */
+.rbc-time-slot {
+  border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
+}
+
+/* Date labels (e.g., for month view) */
+.rbc-date-cell {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+/* Grid lines */
+.rbc-timeslot-group {
+  border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
 }

@@ -24,7 +24,7 @@
 //           }
 //         );
 //         setAppointments(response.data.appointments);
-       
+
 //         console.log("Appointments data:", response.data.appointments);
 //       } catch (error) {
 //         console.error("Failed to fetch appointments:", error);
@@ -71,7 +71,7 @@
 //                 <Text>Service: {appointment.service_name}</Text>
 //                 <Text>Description: {appointment.description}</Text>
 //                 <Text>Price: {appointment.service_price}</Text>
-              
+
 //                 <Text>Date: {formatDate(appointment.appointment_date)}</Text>
 //                 <Text>Time: {appointment.start_time}</Text>
 //                   <Text>Duration: {appointment.service_duration}</Text>
@@ -189,8 +189,10 @@ const Dashboard = () => {
         Dashboard
       </Title>
       <Button
+        className={classes.button}
         fullWidth
-        variant="default"
+        variant="gradient"
+        gradient={{ from: "pink", to: "grey" }}
         radius="xl"
         size="md"
         onClick={handleBookAppointment}

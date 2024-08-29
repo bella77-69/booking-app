@@ -26,3 +26,14 @@
     margin-bottom: 20px;
   }
   
+  .button {
+    padding-left: rem(50px);
+    padding-right: rem(50px);
+    font-family:
+        Greycliff CF,
+        var(--mantine-font-family);
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+}
