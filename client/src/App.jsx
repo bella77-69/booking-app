@@ -7,6 +7,7 @@ import Navbar from "./components/Nav/Navbar";
 import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
+import AboutUs from "./pages/About/AboutUs";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
 import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -16,6 +17,7 @@ import DeleteRequest from "./pages/Dashboard/DeleteRequest";
 import UserUpdate from "./pages/Dashboard/UserUpdate";
 import AppointmentDetails from "./pages/Admin/AppointmentDetails";
 import UserAppointmentDetails from "./pages/Dashboard/UserAppointmentDetails";
+
 function App() {
   return (
     <MantineProvider>
@@ -25,9 +27,12 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
-
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
-          <Route path="/user/appointment-details/:id" element={<UserAppointmentDetails />} />
+          <Route
+            path="/user/appointment-details/:id"
+            element={<UserAppointmentDetails />}
+          />
           <Route path="/admin-dashboard" exact element={<AdminDashboard />} />
           <Route
             path="/admin/appointment-details/:id"

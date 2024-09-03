@@ -1,47 +1,42 @@
-import { Container, Title, Text } from "@mantine/core";
-import aboutImg from "../../assets/images/banner-eyelash.jpg";
+import { Container, Title, Text, Paper, Image, Group, Stack } from "@mantine/core";
+import aboutImg from "../../assets/images/about.png";
 import classes from './AboutUs.module.css';
 
-function AboutUs(props) {
-    return (
-      <Container size={700} className={classes.wrapper}>
-  
-      <Title className="text-center" order={2}>
+function AboutUs() {
+  return (
+    <Container size="lg" className={classes.wrapper} mt="xl">
+      <Title order={1} align="center" mb="lg">
         About Us
       </Title>
-        {/* <Title title="Our Story" /> */}
-        <Container size={660} p={0}>
-          <div className="col-md-8">
-            {/* <img
-              className="img-fluid p-1 mt-2"
-              src={aboutImg}
-              alt="eyelash-extensions"
-            /> */}
-          </div>
-          <div className="col-md-6 mt-2">
-            <Text c="dimmed" className="description">
-           
-              Longer, thicker and fuller Lashes! Bella Lashes Inc Eyelash
-              Extensions are a semi-permanent way of lengthening and thickening
-              your Natural Eyelashes without the need for mascara or curlers.
+
+      <Container size={700}>
+        <Group position="center" spacing="xl">
+          <Image 
+            src={aboutImg} 
+            alt="eyelash-extensions"
+            className="img-fluid" 
+            radius="md" 
+            withPlaceholder 
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        </Group>
+
+        <Paper padding="xl" mt="lg">
+          <Stack spacing="md">
+            <Text size="md">
+              Longer, thicker, and fuller lashes! Bella Lashes Inc Eyelash Extensions are a semi-permanent way of lengthening and thickening your natural eyelashes without the need for mascara or curlers.
             </Text>
-            <p>
-              Bella Lashes Inc Eyelashes are virtually weightless, and curved to
-              replicate a Natural Eyelash. These Lashes are water-resistant,
-              light weight and utterly flawless. No one will ever guess that
-              you have Eyelash Extensions.
-            </p>
-            <p>
-              Bella Lashes Inc. offers Classic, Volume and Max Volume Eyelash
-              Extensions along with other beauty services including Lash Lifts,
-              Lash and Brow Tints. Bella Lashes Inc is your one stop shop for
-              all your beauty needs!
-            </p>
-          </div>
-        </Container>
-      
+            <Text size="md">
+              Bella Lashes Inc Eyelashes are virtually weightless and curved to replicate a natural eyelash. These lashes are water-resistant, lightweight, and utterly flawless. No one will ever guess that you have eyelash extensions.
+            </Text>
+            <Text size="md">
+              Bella Lashes Inc. offers Classic, Volume, and Max Volume Eyelash Extensions along with other beauty services including Lash Lifts, Lash and Brow Tints. Bella Lashes Inc is your one-stop shop for all your beauty needs!
+            </Text>
+          </Stack>
+        </Paper>
       </Container>
-    );
+    </Container>
+  );
 }
 
 export default AboutUs;
