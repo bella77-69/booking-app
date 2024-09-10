@@ -10,8 +10,12 @@
   .itemIcon {
     padding: var(--mantine-spacing-xs);
     margin-right: var(--mantine-spacing-md);
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white)); /* Dark mode text color */
+  border-radius: 8px;
   }
   
+
   .itemTitle {
     margin-bottom: calc(var(--mantine-spacing-xs) / 2);
   }
@@ -29,12 +33,11 @@
     line-height: 1;
     text-align: center;
     margin-top: var(--mantine-spacing-xl);
-    padding: 15px;
   }
   
   .description {
     text-align: center;
-    margin-top: var(--mantine-spacing-xs);
+    margin: var(--mantine-spacing-md);
   }
   
   .highlight {

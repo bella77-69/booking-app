@@ -8,6 +8,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
 import AboutUs from "./pages/About/AboutUs";
+import Services from "./pages/Services/Services";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
 import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -25,9 +26,11 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/about" element={<AboutUs />} />
+        
           <Route path="/dashboard/:userId" exact element={<Dashboard />} />
           <Route
             path="/user/appointment-details/:id"
