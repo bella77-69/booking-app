@@ -8,42 +8,19 @@ import volumeImage from '../../assets/images/volume.jpg';
 import liftImage from '../../assets/images/lift.jpg';
 import classes from './Services.module.css';
 
+// Service Class
 class Service {
-  constructor(image, title, description, link, basePrice, isAvailable = true) {
+  constructor(image, title, description, link) {
     this.image = image;
     this.title = title;
     this.description = description;
     this.link = link;
-    this.basePrice = basePrice;
-    this.isAvailable = isAvailable;
   }
 
   // Method to apply a discount
   applyDiscount(discountPercent) {
     const discountMessage = `Now with ${discountPercent}% off!`;
     this.description = `${this.description} ${discountMessage}`;
-  }
-
-  // Method to update availability status
-  updateAvailability(status) {
-    this.isAvailable = status;
-  }
-
-  // Method to dynamically adjust price based on user preferences
-  adjustPriceBasedOnPreferences(userPreferences) {
-    let finalPrice = this.basePrice;
-
-    // Example: Increase price for premium options (e.g., premium lash material)
-    if (userPreferences.premiumMaterial) {
-      finalPrice += 20; // Add $20 for premium material
-    }
-
-    // Example: Apply discount for first-time customers
-    if (userPreferences.isFirstTimeCustomer) {
-      finalPrice -= finalPrice * 0.1; // 10% off for first-time customers
-    }
-
-    return finalPrice.toFixed(2); // Return price with two decimal points
   }
 }
 
@@ -53,44 +30,31 @@ const servicesData = [
     classicImage,
     'Classic Lashes',
     'Classic Lashes are a single extension applied to a single natural lash',
-    '/classic-lashes',
-    100 // base price
+    '/classic-lashes'
   ),
   new Service(
     hybridImage,
     'Hybrid Lashes',
     'Hybrid Lashes are a mix of Classic and Volume Lashes',
-    '/hybrid-lashes',
-    120 // base price
+    '/hybrid-lashes'
   ),
   new Service(
     volumeImage,
     'Volume Lashes',
     'Volume Lashes are multiple extensions applied to a single natural lash',
-    '/volume-lashes',
-    140 // base price
+    '/volume-lashes'
   ),
   new Service(
     liftImage,
     'Lash Lifts',
     'Lash lifts are a semi-permanent treatment that enhances your natural lashes',
-    '/lash-lifts',
-    80 // base price
+    '/lash-lifts'
   ),
 ];
 
-// Example: Apply a discount and adjust availability for certain services
+// Apply a discount to certain services (e.g., 20% off)
 servicesData[0].applyDiscount(20); // 20% off Classic Lashes
-servicesData[2].updateAvailability(false); // Volume Lashes are out of stock
-
-// Example of user preferences to adjust pricing
-const userPreferences = {
-  premiumMaterial: true,
-  isFirstTimeCustomer: true,
-};
-
-// Dynamically calculate the price for the first service (Classic Lashes)
-const adjustedPrice = servicesData[0].adjustPriceBasedOnPreferences(userPreferences);
+servicesData[2].applyDiscount(15); // 15% off Volume Lashes
 
 export function Services() {
   const items = servicesData.map((service) => (
@@ -104,10 +68,6 @@ export function Services() {
             {service.title}
           </Text>
           <Text c="dimmed">{service.description}</Text>
-          {!service.isAvailable && (
-            <Text c="red" fw={700}>Currently Unavailable</Text>
-          )}
-          <Text fw={700}>Price: ${service.adjustPriceBasedOnPreferences(userPreferences)}</Text>
         </div>
       </div>
     </Link>
