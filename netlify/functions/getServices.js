@@ -1,4 +1,4 @@
-const {serviceController} = require('./service.controller');
+const {serviceController} = require('../../server/controllers/service.controller');
 
 exports.handler = async (event, context) => {
     try {

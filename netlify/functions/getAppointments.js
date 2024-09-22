@@ -1,5 +1,5 @@
 // netlify/functions/getAppointments.js
-const { getAppointmentsController } = require('../controllers/appointment.controller');
+const { getAppointmentsController } = require('../../server/controllers/appointment.controller');
 
 exports.handler = async (event, context) => {
     try {

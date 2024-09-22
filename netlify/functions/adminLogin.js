@@ -1,7 +1,6 @@
 // netlify/functions/adminLogin.js
-const { db } = require('../config'); // Adjust path as needed
-const { adminLoginController } = require('../controllers/admin.controller'); // Adjust path as needed
-
+const { db } = require('../../server/config/db.config')
+const { adminLoginController } = require('../../server/controllers/admin.controller'); 
 exports.handler = async (event, context) => {
     try {
         const admin = await adminLoginController(db, event);

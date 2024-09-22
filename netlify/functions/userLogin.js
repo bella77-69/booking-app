@@ -1,4 +1,4 @@
-const {userController } = require('../controllers/user.controller');
+const {userController } = require('../../server/controllers/user.controller');
 
 exports.handler = async (event, context) => {
     try {
