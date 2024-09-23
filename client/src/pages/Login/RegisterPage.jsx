@@ -33,7 +33,7 @@ const Register = () => {
     }));
 
     try {
-      const res = await axios.post(`http://localhost:8000/api/user/register`, {
+      const res = await axios.post(`https://booking-app-server-kx79.onrender.com/api/user/register`, {
         full_name,
         username,
         email,
