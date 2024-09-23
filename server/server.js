@@ -8,7 +8,7 @@ const serviceRoutes = require('./routes/services.route');
 const adminRoutes = require('./routes/admin.route');
 
 
-const port = 8000;
+const port = process.env.port || 8000;
 const app = express();
 
 app.use(bodyParser.json());
