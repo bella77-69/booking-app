@@ -1,6 +1,6 @@
 import { Anchor, Group, ActionIcon, rem } from '@mantine/core';
 import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
-// import { MantineLogo } from '@mantinex/mantine-logo';
+import { useMantineColorScheme } from '@mantine/core';
 import classes from './Footer.module.css';
 
 const links = [
@@ -12,14 +12,15 @@ const links = [
 ];
 
 export default function Footer() {
+  const { colorScheme } = useMantineColorScheme();
+
   const items = links.map((link) => (
     <Anchor
-      c="dimmed"
       key={link.label}
       href={link.link}
       lh={1}
-      onClick={(event) => event.preventDefault()}
       size="sm"
+      c={colorScheme === 'dark' ? 'white' : 'dark'}
     >
       {link.label}
     </Anchor>
@@ -28,11 +29,10 @@ export default function Footer() {
   return (
     <div className={classes.footer}>
       <div className={classes.inner}>
-        {/* <MantineLogo size={28} /> */}
-
+        {/*  logo or title here*/}
+        
         <Group className={classes.links}>{items}</Group>
-
-        <Group gap="xs" justify="flex-end" wrap="nowrap">
+        <Group gap="xs" grow justify="center">
           <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandTwitter style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>

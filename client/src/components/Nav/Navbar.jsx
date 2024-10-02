@@ -1,75 +1,85 @@
 import React, { useState, useEffect } from 'react';
 import {
-  HoverCard,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
   Drawer,
-  Collapse,
+  Divider,
   ScrollArea,
   rem,
   useMantineTheme,
 } from '@mantine/core';
-import logoImage from '../../assets/logo/logo2.png';
 import { useDisclosure } from '@mantine/hooks';
+import { ActionToggle } from '../ColorScheme/ActionToggle';
+import classes from './Navbar.module.css';
 import {
-  IconNotification,
   IconCode,
   IconBook,
   IconChartPie3,
   IconFingerprint,
   IconCoin,
-  IconChevronDown,
 } from '@tabler/icons-react';
-import classes from './Navbar.module.css';
-import { ActionToggle } from '../ColorScheme/ActionToggle';
 
 export function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const theme = useMantineTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); 
+    const storedUserId = localStorage.getItem('userId'); // userId is stored in localStorage
+    if (token) {
+      setIsLoggedIn(true);
+      setUserId(storedUserId); // Set userId from localStorage
+    } else {
+      setIsLoggedIn(false);
+      setUserId(null);
+    }
   }, []);
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId'); // Remove userId on logout
     setIsLoggedIn(false);
+    setUserId(null);
     window.location.href = "/login";
   };
 
+  const loginHref = '/login';
+  const signupHref = '/register';
+
+  // Define menu links
   const menuLinks = [
     { icon: IconCode, title: 'Home', description: 'Home Page', href: '/' },
     { icon: IconCoin, title: 'About Us', description: 'About Us Page', href: '/about' },
     { icon: IconBook, title: 'Services', description: 'Services Page', href: '/services' },
   ];
 
+  // Conditionally add dashboard and appointment links if user is logged in
+  if (isLoggedIn && userId) {
+    menuLinks.push(
+      { icon: IconChartPie3, title: 'Dashboard', description: 'Your Dashboard', href: `/dashboard/${userId}` },
+      { icon: IconFingerprint, title: 'Book Appointment', description: 'Book an Appointment', href: `/book-appointment/${userId}` }
+    );
+  }
+
+  // Render links
   const links = menuLinks.map((link) => (
     <a href={link.href} className={classes.link} key={link.title}>
       {link.title}
     </a>
   ));
 
-  const loginHref = '/login';
-  const signupHref = '/register';
-
   return (
-    <Box pb={20} mt={20}>
+    <Box pb={5} mt={5}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Group h="100%" gap={0} visibleFrom="sm">
             {links}
           </Group>
+
           <Group visibleFrom="sm">
             {!isLoggedIn ? (
               <>
@@ -77,10 +87,13 @@ export function Navbar() {
                 <Button component="a" href={signupHref}>Sign up</Button>
               </>
             ) : (
-              <Button onClick={logout} variant="default">Log out</Button>
+              <>
+                <Button onClick={logout} variant="default">Log out</Button>
+              </>
             )}
             <ActionToggle />
           </Group>
+
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>
@@ -96,11 +109,8 @@ export function Navbar() {
       >
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
-          {menuLinks.map((link) => (
-            <a href={link.href} className={classes.link} key={link.title}>
-              {link.title}
-            </a>
-          ))}
+          {links}
+
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
             {!isLoggedIn ? (
@@ -109,7 +119,9 @@ export function Navbar() {
                 <Button component="a" href={signupHref}>Sign up</Button>
               </>
             ) : (
-              <Button onClick={logout} variant="default">Log out</Button>
+              <>
+                <Button onClick={logout} variant="default">Log out</Button>
+              </>
             )}
             <ActionToggle />
           </Group>
@@ -120,3 +132,4 @@ export function Navbar() {
 }
 
 export default Navbar;
+
