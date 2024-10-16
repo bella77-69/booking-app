@@ -9,7 +9,8 @@ export function Hero() {
           <div className={classes.content}>
             <Title className={classes.title}>
        
-            Welcome to Bella Lashes Inc{" "}
+            Welcome to {" "}
+             {/* Bella Lashes Inc{" "}*/}
         
               <Text
                 component="span"
