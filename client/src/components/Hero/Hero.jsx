@@ -33,6 +33,8 @@ export function Hero() {
               size="sm"
               className={classes.control}
               mt={40}
+               component="a"
+          href="/login"
             >
               Book Appointment
             </Button>

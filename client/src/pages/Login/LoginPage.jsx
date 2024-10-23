@@ -52,8 +52,7 @@ function Login() {
         if (user.role.toLowerCase() === 'admin') {
           window.location.href = `/admin-dashboard`;
         } else {
-          // window.location.href = `/dashboard/${user.user_id}`;
-          window.location.href = `/`;
+          window.location.href = `/book-appointment/${user.user_id}`;
         }
       } else {
         setState((prevState) => ({
