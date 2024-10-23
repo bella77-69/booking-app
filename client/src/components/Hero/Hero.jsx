@@ -18,7 +18,7 @@ export function Hero() {
                 Bella Lashes Inc.
               </Text>{" "}
             </Title>
-            <Divider my="xl" />
+            <Divider my="sm" />
             <Text size="lg" className={classes.description} mt={30}>
               Experience the best eyelash extensions in town! We specialize in
               creating longer, thicker, and fuller lashes without the need for
