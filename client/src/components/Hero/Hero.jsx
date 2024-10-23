@@ -9,24 +9,27 @@ export function Hero() {
           <div className={classes.content}>
             <Title className={classes.title}>
               Welcome to{" "}
+              <Text component="span" variant="filled" color="pink" inherit>
+                Bella {" "}
+              </Text>
               <Text
                 component="span"
                 inherit
                 variant="gradient"
                 gradient={{ from: "pink", to: "white" }}
               >
-                Bella Lashes Inc.
+                Lashes Inc.
               </Text>{" "}
             </Title>
-            <Divider my="sm" />
+            <Divider my="lg" />
             <Text size="lg" className={classes.description} mt={30}>
               Experience the best eyelash extensions in town! We specialize in
               creating longer, thicker, and fuller lashes without the need for
               mascara or curlers.
             </Text>
             <Button
-              variant="gradient"
-              gradient={{ from: "pink", to: "grey" }}
+              variant="filled"
+              color="pink"
               size="sm"
               className={classes.control}
               mt={40}
