@@ -22,7 +22,7 @@ export function Hero() {
               </Text>{" "}
             </Title>
             <Divider my="lg" />
-            <Text size="lg" className={classes.description} mt={30}>
+            <Text size="lg" className={classes.description} mt={20}>
               Experience the best eyelash extensions in town! We specialize in
               creating longer, thicker, and fuller lashes without the need for
               mascara or curlers.

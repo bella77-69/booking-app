@@ -5,14 +5,14 @@
     url(../../assets/images/main.jpg);
   /* background-image: radial-gradient(circle, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
     url(../../assets/images/main.jpg); */
-  padding-top: calc(var(--mantine-spacing-xl) * 4);
+  padding-top: calc(var(--mantine-spacing-xl) * 10);
   padding-bottom: calc(var(--mantine-spacing-xl) * 4);
 }
 
 .inner {
   display: flex;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
@@ -47,7 +47,7 @@
   font-family: Greycliff CF, var(--mantine-font-family);
   font-weight: 900;
   line-height: 1.05;
-  max-width: 500px;
+  max-width: 400px;
   font-size: 3.5rem;
 
   @media (max-width: 1024px) {
