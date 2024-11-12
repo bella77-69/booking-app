@@ -22,7 +22,7 @@ import {
   Image,
 } from "@mantine/core";
 import classes from "./Services.module.css";
-import hybridImage from "../../assets/images/hybrid.jpg";
+import hybridImage from  "../../assets/images/eyelash-icon.png";
 
 function Hybrid() {
   return (

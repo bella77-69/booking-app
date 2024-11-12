@@ -1,16 +1,3 @@
-// import volumeImage from '../../assets/images/volume.jpg';
-// import ServicePage from './Service'
-
-// // Classic Lashes Page
-// // Volume Lashes Page
-// export const VolumeLashes = () => (
-//   <ServicePage
-//     title="Volume Lashes"
-//     description="Volume Lashes are multiple extensions applied to a single natural lash."
-//     image={volumeImage}
-//   />
-// );
-
 import React from "react";
 import {
   Text,
@@ -23,7 +10,7 @@ import {
   Image,
 } from "@mantine/core";
 import classes from "./Services.module.css";
-import volumeImage from "../../assets/images/volume.jpg";
+import volumeImage from  "../../assets/images/eyelash-icon.png";
 
 function Volume(props) {
   return (

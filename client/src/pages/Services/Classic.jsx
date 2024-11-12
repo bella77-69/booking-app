@@ -10,7 +10,7 @@ import {
   Image
 } from "@mantine/core";
 import classes from "./Services.module.css";
-import classicImage from "../../assets/images/classic.jpg";
+import classicImage from "../../assets/images/eyelash-icon.png";
 
 function Classic() {
   return (

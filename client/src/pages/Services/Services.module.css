@@ -91,12 +91,13 @@
 }
 
 .image {
-  width: 200px; 
-  height: 200px; 
+  width: 150px; 
+  height: 150px; 
   border-radius: 50%; 
   object-fit: cover; 
   margin: 0 auto 2rem; 
-  box-shadow: 0 4px 12px var(--shadow-color); 
+  background-color: var(--background-light);
+  /* box-shadow: 0 4px 12px var(--shadow-color);  */
 }
 
 .simpleGrid {
