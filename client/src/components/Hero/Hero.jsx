@@ -7,7 +7,7 @@ export function Hero() {
       <Container size="lg">
         <div className={classes.inner}>
           <div className={classes.content}>
-            <Title className={classes.title}>
+            <Title className={classes.title} order={1}>
               Welcome to{" "}
               <Text component="span" variant="filled" color="pink" inherit>
                 Bella {" "}
@@ -19,10 +19,11 @@ export function Hero() {
                 gradient={{ from: "pink", to: "white" }}
               >
                 Lashes Inc.
-              </Text>{" "}
+              </Text>
             </Title>
-            <Divider my="lg" />
+        
             <Text size="lg" className={classes.description} mt={20}>
+            <Divider my="lg" />
               Experience the best eyelash extensions in town! We specialize in
               creating longer, thicker, and fuller lashes without the need for
               mascara or curlers.
@@ -33,8 +34,8 @@ export function Hero() {
               size="sm"
               className={classes.control}
               mt={40}
-               component="a"
-          href="/login"
+              component="a"
+              href="/login"
             >
               Book Appointment
             </Button>
