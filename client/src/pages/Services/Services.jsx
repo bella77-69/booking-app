@@ -30,19 +30,19 @@ const servicesData = [
     classicImage,
     'Classic Lashes',
     'Classic Lashes are a single extension applied to a single natural lash',
-    '/classic-lashes'
+    '/classic'
   ),
   new Service(
     hybridImage,
     'Hybrid Lashes',
     'Hybrid Lashes are a mix of Classic and Volume Lashes',
-    '/hybrid-lashes'
+    '/hybrid'
   ),
   new Service(
     volumeImage,
     'Volume Lashes',
     'Volume Lashes are multiple extensions applied to a single natural lash',
-    '/volume-lashes'
+    '/volume'
   ),
   new Service(
     liftImage,

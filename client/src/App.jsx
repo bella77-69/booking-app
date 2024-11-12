@@ -18,6 +18,9 @@ import DeleteRequest from "./pages/Dashboard/DeleteRequest";
 import UserUpdate from "./pages/Dashboard/UserUpdate";
 import AppointmentDetails from "./pages/Admin/AppointmentDetails";
 import UserAppointmentDetails from "./pages/Dashboard/UserAppointmentDetails";
+import Classic from "./pages/Services/Classic";
+import Hybrid from "./pages/Services/Hybrid";
+import Volume from "./pages/Services/Volume";
 
 function App() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/classic" element={<Classic />} />
+          <Route path="/services/hybrid" element={<Hybrid />} />
+          <Route path="/services/volume" element={<Volume />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
         
