@@ -54,7 +54,7 @@ export function Navbar() {
   const menuLinks = [
     { icon: IconCode, title: 'Home', description: 'Home Page', href: '/' },
     { icon: IconCoin, title: 'About Us', description: 'About Us Page', href: '/about' },
-    { icon: IconBook, title: 'Services', description: 'Services Page', href: '/services' },
+    // { icon: IconBook, title: 'Services', description: 'Services Page', href: '/services' },
   ];
 
   // Conditionally add dashboard and appointment links if user is logged in

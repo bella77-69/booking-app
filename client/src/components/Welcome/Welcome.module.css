@@ -44,7 +44,20 @@
   letter-spacing: 0.5px;
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
 
+.cardContent {
+  flex-grow: 1;
+}
+
+.control {
+  margin-top: auto;
+}
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

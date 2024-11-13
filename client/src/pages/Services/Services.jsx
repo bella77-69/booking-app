@@ -89,12 +89,6 @@ export function Services() {
       </Title>
       <Text className={classes.description}>{service.description}</Text>
       <Divider my="sm" />
-      {/* <SimpleGrid cols={2} className={classes.details}>
-        <Text fw={700}>Price</Text>
-        <Text>{service.price}</Text>
-        <Text fw={700}>Duration</Text>
-        <Text>{service.duration}</Text>
-      </SimpleGrid> */}
       <Button
         variant="filled"
         color="pink"
@@ -112,7 +106,7 @@ export function Services() {
     <Container size="lg" className={classes.wrapper}>
       <Container size={660} p={0} mt="md" align="center">
         <Title className={classes.title}>Bella Lashes Inc</Title>
-        <Text className={classes.subtitle}>
+        <Text className={classes.description}>
           Longer, thicker, and fuller lashes! Bella Lashes Inc offers
           semi-permanent eyelash extensions to enhance your natural beauty.
         </Text>

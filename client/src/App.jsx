@@ -8,7 +8,7 @@ import LoginPage from "./pages/Login/LoginPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import HomePage from "./pages/Home/HomePage";
 import AboutUs from "./pages/About/AboutUs";
-import Services from "./pages/Services/Services";
+// import Services from "./pages/Services/Services";
 import BookAppointment from "./pages/Dashboard/BookAppointment";
 import DeleteAppointment from "./pages/Admin/DeleteAppointment";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -21,6 +21,7 @@ import UserAppointmentDetails from "./pages/Dashboard/UserAppointmentDetails";
 import Classic from "./pages/Services/Classic";
 import Hybrid from "./pages/Services/Hybrid";
 import Volume from "./pages/Services/Volume";
+import Lift from "./pages/Services/LashLift";
 
 function App() {
   return (
@@ -30,10 +31,11 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutUs />} />
-          <Route path="/services" element={<Services />} />
+          {/* <Route path="/services" element={<Services />} /> */}
           <Route path="/services/classic" element={<Classic />} />
           <Route path="/services/hybrid" element={<Hybrid />} />
           <Route path="/services/volume" element={<Volume />} />
+          <Route path="/services/lash-lifts" element={<Lift />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Register />} />
         
