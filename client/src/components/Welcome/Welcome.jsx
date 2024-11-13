@@ -37,7 +37,8 @@ export function Welcome() {
 
   return (
     <Container size="lg" className={classes.wrapper}>
-      <Container size={660} p={0} mt="md" align="center">
+        {/* <Container size={660} p={0} mt="md" align="center"> */}
+      <Container size={800} p={0} mt="md" align="center">
         <Title className={classes.title} order={1}>
           Welcome
         </Title>
