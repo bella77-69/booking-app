@@ -1,93 +1,120 @@
-// File: src/pages/Services.jsx
+import {
+  Image,
+  Text,
+  Container,
+  Title,
+  SimpleGrid,
+  Button,
+  Card,
+  Divider,
+} from "@mantine/core";
+import { Link } from "react-router-dom";
+import classicImage from "../../assets/images/classic.jpg";
+import hybridImage from "../../assets/images/classic.jpg";
+import volumeImage from "../../assets/images/volume.jpg";
+import liftImage from "../../assets/images/volume.jpg";
+import classes from "./Services.module.css";
 
-import { Image, Text, Container, ThemeIcon, Title, SimpleGrid } from '@mantine/core';
-import { Link } from 'react-router-dom';
-import classicImage from '../../assets/images/classic.jpg';
-import hybridImage from '../../assets/images/hybrid.jpg';
-import volumeImage from '../../assets/images/volume.jpg';
-import liftImage from '../../assets/images/lift.jpg';
-import classes from './Services.module.css';
-
-// Service Class
 class Service {
-  constructor(image, title, description, link) {
+  constructor(image, title, description, price, duration, link) {
     this.image = image;
     this.title = title;
     this.description = description;
+    this.price = price;
+    this.duration = duration;
     this.link = link;
   }
 
-  // Method to apply a discount
   applyDiscount(discountPercent) {
     const discountMessage = `Now with ${discountPercent}% off!`;
     this.description = `${this.description} ${discountMessage}`;
   }
 }
 
-// Instantiate the Service objects
+// Instantiate Service objects
 const servicesData = [
   new Service(
     classicImage,
-    'Classic Lashes',
-    'Classic Lashes are a single extension applied to a single natural lash',
-    '/classic'
+    "Classic Lashes",
+    "Single extension per natural lash.",
+    "$100",
+    "1.5 hours",
+    "/services/classic"
   ),
   new Service(
     hybridImage,
-    'Hybrid Lashes',
-    'Hybrid Lashes are a mix of Classic and Volume Lashes',
-    '/hybrid'
+    "Hybrid Lashes",
+    "Mix of Classic and Volume Lashes.",
+    "$120",
+    "1.75 hours",
+    "/services/hybrid"
   ),
   new Service(
     volumeImage,
-    'Volume Lashes',
-    'Volume Lashes are multiple extensions applied to a single natural lash',
-    '/volume'
+    "Volume Lashes",
+    "Multiple extensions per natural lash.",
+    "$150",
+    "2 hours",
+    "/services/volume"
   ),
   new Service(
     liftImage,
-    'Lash Lifts',
-    'Lash lifts are a semi-permanent treatment that enhances your natural lashes',
-    '/lash-lifts'
+    "Lash Lifts",
+    "Semi-permanent natural lash enhancement.",
+    "$90",
+    "1 hour",
+    "/lash-lifts"
   ),
 ];
 
-// Apply a discount to certain services (e.g., 20% off)
-servicesData[0].applyDiscount(20); // 20% off Classic Lashes
-servicesData[2].applyDiscount(15); // 15% off Volume Lashes
+servicesData[0].applyDiscount(10);
+servicesData[2].applyDiscount(15);
 
 export function Services() {
   const items = servicesData.map((service) => (
-    <Link to={service.link} key={service.title} className={classes.link}> 
-      <div className={classes.item}>
-        <ThemeIcon variant="light" className={classes.itemIcon} size={60} radius="md">
-          <Image src={service.image} />
-        </ThemeIcon>
-        <div>
-          <Text fw={700} fz="lg" className={classes.itemTitle}>
-            {service.title}
-          </Text>
-          <Text c="dimmed">{service.description}</Text>
-        </div>
-      </div>
-    </Link>
+    <Card
+      key={service.title}
+      shadow="sm"
+      padding="lg"
+      radius="md"
+      className={classes.card}
+    >
+      <Image
+        src={service.image}
+        alt={service.title}
+        className={classes.image}
+      />
+      <Title order={2} className={classes.title}>
+        {service.title}
+      </Title>
+      <Text className={classes.description}>{service.description}</Text>
+      <Divider my="sm" />
+      {/* <SimpleGrid cols={2} className={classes.details}>
+        <Text fw={700}>Price</Text>
+        <Text>{service.price}</Text>
+        <Text fw={700}>Duration</Text>
+        <Text>{service.duration}</Text>
+      </SimpleGrid> */}
+      <Button
+        variant="filled"
+        color="pink"
+        size="sm"
+        className={classes.bookButton}
+        component={Link}
+        to={service.link}
+      >
+        View Details
+      </Button>
+    </Card>
   ));
 
   return (
-    <Container size={700} className={classes.wrapper} mt='xl'>
-      <Title className={classes.title} order={2}>
-        Bella Lashes Inc
-      </Title>
-      <Container size={660} p={0}>
-        <Text c="dimmed" className={classes.description}>
-          Longer, thicker and fuller Lashes! Bella Lashes Inc Eyelash
-          Extensions are a semi-permanent way of lengthening and thickening
-          your Natural Eyelashes without the need for mascara or curlers.
-        </Text>
-        <Text c="dimmed" className={classes.description}>
-          We offer a variety of lengths, thicknesses, and curls to create a customized look for each client. 
-          Our lash extensions are safe, comfortable, and long-lasting. 
-          They are perfect for everyday wear, special occasions, or for those who just want to wake up looking fabulous!
+    <Container size="lg" className={classes.wrapper}>
+      <Container size={660} p={0} mt="md" align="center">
+        <Title className={classes.title}>Bella Lashes Inc</Title>
+        <Text className={classes.subtitle}>
+          Longer, thicker, and fuller lashes! Bella Lashes Inc offers
+          semi-permanent eyelash extensions to enhance your natural beauty.
         </Text>
       </Container>
       <SimpleGrid cols={{ base: 1, xs: 2 }} spacing={50} mt={30}>
