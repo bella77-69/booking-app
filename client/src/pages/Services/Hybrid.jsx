@@ -1,15 +1,3 @@
-// import hybridImage from '../../assets/images/hybrid.jpg';
-// import ServicePage from './Service'
-
-// // Hybrid Lashes Page
-// export const HybridLashes = () => (
-//   <ServicePage
-//     title="Hybrid Lashes"
-//     description="Hybrid Lashes are a mix of Classic and Volume Lashes."
-//     image={hybridImage}
-//   />
-// );
-
 import React from "react";
 import {
   Text,
@@ -69,6 +57,8 @@ function Hybrid() {
             <Text>Fill: 1 hour</Text>
           </Card>
         </SimpleGrid>
+        <Divider my="xl" />
+        <SimpleGrid className={classes.simpleGrid}>
         <Button
           variant="filled"
           color="pink"
@@ -79,6 +69,17 @@ function Hybrid() {
         >
           Book Appointment
         </Button>
+        <Button
+          variant="outline"
+          color="pink"
+          size="sm"
+          className={classes.control}
+          component="a"
+          href="/"
+        >
+          Back
+        </Button>
+        </SimpleGrid>
       </Container>
     </Container>
   );

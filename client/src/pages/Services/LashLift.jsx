@@ -64,7 +64,7 @@ function Classic() {
         </SimpleGrid>
 
         <Divider my="xl" />
-
+        <SimpleGrid className={classes.simpleGrid}>
         <Button
           variant="filled"
           color="pink"
@@ -75,7 +75,19 @@ function Classic() {
         >
           Book Appointment
         </Button>
+        <Button
+          variant="outline"
+          color="pink"
+          size="sm"
+          className={classes.control}
+          component="a"
+          href="/"
+        >
+          Back
+        </Button>
+      </SimpleGrid>
       </Container>
+   
     </Container>
   );
 }

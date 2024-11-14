@@ -74,14 +74,17 @@ export function Welcome() {
           <Text weight={500} size="md" mt="sm">
             Classic Lash Extensions
           </Text>
+          <Divider my="sm" />
           <Text color="dimmed" size="sm">
-            Natural-looking extensions that subtly enhance your beauty, perfect
+            Natural-looking extensions that subtly enhance your lashes, perfect
             for an elegant, everyday look.
           </Text>
-          <Text weight={700} mt="sm">
+          {/* <Text weight={700} mt="sm">
             $100
-          </Text>
-          <Divider my="sm" />
+          </Text> */}
+          {/* <Divider my="sm" /> */}
+          <br />
+          <br />
           <Button
             variant="filled"
             color="pink"
@@ -107,14 +110,15 @@ export function Welcome() {
           <Text weight={500} size="md" mt="sm">
             Volume Lash Extensions
           </Text>
+          <Divider my="sm" />
           <Text color="dimmed" size="sm">
             Full, dramatic lashes that create a bold, eye-catching effect, ideal
-            for those who love a glamorous style.
+            for those who love a glamorous style. 
           </Text>
-          <Text weight={700} mt="sm">
+          {/* <Text weight={700} mt="sm">
             $150
-          </Text>
-          <Divider my="sm" />
+          </Text> */}
+       
           <Button
             variant="filled"
             color="pink"
@@ -140,14 +144,15 @@ export function Welcome() {
           <Text weight={500} size="md" mt="sm">
             Hybrid Lash Extensions
           </Text>
+          <Divider my="sm" />
           <Text color="dimmed" size="sm">
             A blend of classic and volume extensions, offering a balanced,
-            versatile look that’s both soft and full.
+            versatile look that’s soft and full.
           </Text>
-          <Text weight={700} mt="sm">
+          {/* <Text weight={700} mt="sm">
             $130
-          </Text>
-          <Divider my="sm" />
+          </Text> */}
+          {/* <Divider my="sm" /> */}
           <Button
             variant="filled"
             color="pink"
@@ -172,14 +177,15 @@ export function Welcome() {
           <Text weight={500} size="md" mt="sm">
             Lash Lifts
           </Text>
+          <Divider my="sm" />
           <Text color="dimmed" size="sm">
             A semi-permanent treatment that lifts and curls your lashes from the
             root for a naturally enhanced look.
           </Text>
-          <Text weight={700} mt="sm">
+          {/* <Text weight={700} mt="sm">
             $90
-          </Text>
-          <Divider my="sm" />
+          </Text> */}
+          {/* <Divider my="sm" /> */}
           <Button
             variant="filled"
             color="pink"

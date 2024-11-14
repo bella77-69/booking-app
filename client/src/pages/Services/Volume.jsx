@@ -59,6 +59,8 @@ function Volume(props) {
             <Text>Fill: 1 hour</Text>
           </Card>
         </SimpleGrid>
+        <Divider my="xl" />
+        <SimpleGrid className={classes.simpleGrid}>
         <Button
           variant="filled"
           color="pink"
@@ -69,6 +71,17 @@ function Volume(props) {
         >
           Book Appointment
         </Button>
+        <Button
+          variant="outline"
+          color="pink"
+          size="sm"
+          className={classes.control}
+          component="a"
+          href="/"
+        >
+          Back
+        </Button>
+      </SimpleGrid>
       </Container>
     </Container>
   );
