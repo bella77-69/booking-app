@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
-import { IconEye } from "@tabler/icons-react";
+import { IconEyeClosed } from "@tabler/icons-react";
 import classes from "./Welcome.module.css";
 
 export function Welcome() {
@@ -37,7 +37,7 @@ export function Welcome() {
 
   return (
     <Container size="lg" className={classes.wrapper}>
-        {/* <Container size={660} p={0} mt="md" align="center"> */}
+      {/* <Container size={660} p={0} mt="md" align="center"> */}
       <Container size={800} p={0} mt="md" align="center">
         <Title className={classes.title} order={1}>
           Welcome
@@ -58,19 +58,23 @@ export function Welcome() {
       <Title order={2} align="center" className={classes.subtitle}>
         Our Services
       </Title>
-
-      {/* <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg" mt="md"> */}
       <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg" mt="md">
         <Card
           shadow="sm"
-          padding="lg"
+          padding="md"
           radius="md"
           withBorder
           className={`${classes.card} ${classes.cardContent}`}
           onClick={() => handleCardClick("Classic Lash Extensions")}
           style={{ cursor: "pointer" }}
         >
-          <IconEye size={40} color="pink" />
+          {/* <IconEye size={40} color="pink" /> */}
+          <IconEyeClosed
+            stroke={1}
+            size={40}
+            color="pink"
+            style={{ display: "block", margin: "0 auto" }}
+          />
           <Text weight={500} size="md" mt="sm">
             Classic Lash Extensions
           </Text>
@@ -79,10 +83,6 @@ export function Welcome() {
             Natural-looking extensions that subtly enhance your lashes, perfect
             for an elegant, everyday look.
           </Text>
-          {/* <Text weight={700} mt="sm">
-            $100
-          </Text> */}
-          {/* <Divider my="sm" /> */}
           <br />
           <br />
           <Button
@@ -106,19 +106,20 @@ export function Welcome() {
           onClick={() => handleCardClick("Volume Lash Extensions")}
           style={{ cursor: "pointer" }}
         >
-          <IconEye size={40} color="pink" />
+          <IconEyeClosed
+            stroke={1}
+            size={40}
+            color="pink"
+            style={{ display: "block", margin: "0 auto" }}
+          />
           <Text weight={500} size="md" mt="sm">
             Volume Lash Extensions
           </Text>
           <Divider my="sm" />
           <Text color="dimmed" size="sm">
             Full, dramatic lashes that create a bold, eye-catching effect, ideal
-            for those who love a glamorous style. 
+            for those who love a glamorous style.
           </Text>
-          {/* <Text weight={700} mt="sm">
-            $150
-          </Text> */}
-       
           <Button
             variant="filled"
             color="pink"
@@ -140,7 +141,12 @@ export function Welcome() {
           onClick={() => handleCardClick("Hybrid Lash Extensions")}
           style={{ cursor: "pointer" }}
         >
-          <IconEye size={40} color="pink" />
+          <IconEyeClosed
+            stroke={1}
+            size={40}
+            color="pink"
+            style={{ display: "block", margin: "0 auto" }}
+          />
           <Text weight={500} size="md" mt="sm">
             Hybrid Lash Extensions
           </Text>
@@ -149,10 +155,6 @@ export function Welcome() {
             A blend of classic and volume extensions, offering a balanced,
             versatile look that’s soft and full.
           </Text>
-          {/* <Text weight={700} mt="sm">
-            $130
-          </Text> */}
-          {/* <Divider my="sm" /> */}
           <Button
             variant="filled"
             color="pink"
@@ -173,7 +175,12 @@ export function Welcome() {
           onClick={() => handleCardClick("Lash Lifts")}
           style={{ cursor: "pointer" }}
         >
-          <IconEye size={40} color="pink" />
+          <IconEyeClosed
+            stroke={1}
+            size={40}
+            color="pink"
+            style={{ display: "block", margin: "0 auto" }}
+          />
           <Text weight={500} size="md" mt="sm">
             Lash Lifts
           </Text>
@@ -182,10 +189,6 @@ export function Welcome() {
             A semi-permanent treatment that lifts and curls your lashes from the
             root for a naturally enhanced look.
           </Text>
-          {/* <Text weight={700} mt="sm">
-            $90
-          </Text> */}
-          {/* <Divider my="sm" /> */}
           <Button
             variant="filled"
             color="pink"
@@ -198,20 +201,6 @@ export function Welcome() {
           </Button>
         </Card>
       </SimpleGrid>
-
-      {/* <Container mt="md" align="center">
-        <Button
-          size="sm"
-          mt="sm"
-          variant="filled"
-          color="pink"
-          radius="md"
-          component="a"
-          href="/services"
-        >
-          View Services
-        </Button>
-      </Container> */}
 
       <Divider my="xl" />
     </Container>
