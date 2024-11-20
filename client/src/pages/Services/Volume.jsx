@@ -75,7 +75,7 @@ function Volume(props) {
           variant="outline"
           color="pink"
           size="sm"
-          className={classes.control}
+          className={classes.button}
           component="a"
           href="/"
         >

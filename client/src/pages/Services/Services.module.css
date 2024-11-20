@@ -139,6 +139,27 @@
   transform: scale(1.03);
 }
 
+
+
+.button {
+  color: var(--mantine-color-pink);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  display: inline-block;
+  margin-top: 2rem;
+}
+
+.button:hover{
+  background-color: #1f1e1e;
+  transform: scale(1.03);
+}
+/* .button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px var(--shadow-color);
+} */
 /* Responsive */
 @media (max-width: 768px) {
   .title {

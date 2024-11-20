@@ -16,7 +16,7 @@ function Hybrid() {
   return (
     <Container size="lg" className={classes.wrapper}>
       
-      <Container size={660} p={0} mt="md" align="center">
+      <Container size={660} p={0} mt="md" align="center" >
       <Image src={hybridImage} alt="Hybrid Lashes" className={classes.image}/>
         <Title className={classes.title} order={1}>
           Hybrid Lash Extensions
@@ -73,7 +73,7 @@ function Hybrid() {
           variant="outline"
           color="pink"
           size="sm"
-          className={classes.control}
+          className={classes.button}
           component="a"
           href="/"
         >
