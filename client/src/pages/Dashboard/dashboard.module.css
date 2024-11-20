@@ -1,39 +1,60 @@
-/* .wrapper {
-    padding-top: rem(80px);
-    padding-bottom: rem(50px);
-  }
-  
-  
-  .avatar {
-    border: rem(2px) solid var(--mantine-color-body);
-  } */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  gap: 1.5rem;
+  max-width: 900px;
+  width: 100%; 
+}
 
+.button {
+  width: 100%;
+  max-width: 300px;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-x: auto;
+  padding: 0.5rem;
+}
+
+.calendar-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.calendar-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
   .wrapper {
-    padding-top: rem(80px);
-    padding-bottom: rem(50px);
+    padding: 1rem;
   }
-  
-  /* .card {
-    transition: transform 0.2s ease;
-  }
-  
-  .card:hover {
-    transform: scale(1.02);
-  } */
-  
-  button {
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .button {
-    padding-left: rem(50px);
-    padding-right: rem(50px);
-    font-family:
-        Greycliff CF,
-        var(--mantine-font-family);
 
-    @media (max-width: 768px) {
-        width: 100%;
-    }
+  .button {
+    width: 90%;
+  }
+
+  .calendar-container {
+    max-width: 100%; 
+  }
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    padding: 0.5rem;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-size: 1rem; 
+  }
+
+  .calendar-container {
+    font-size: 0.9rem;
+  }
 }

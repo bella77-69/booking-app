@@ -1,70 +1,22 @@
-/* .rbc-calendar {
-  background-color: #f2f2f2; 
-  color: #000000; 
-  border-radius: 8px;
-}
 
-
-.rbc-toolbar {
-  background-color: #d1d1d1;
-  color: #000000;
-  border-bottom: 1px solid #444;
-}
-
-
-.rbc-event {
-  background-color: #003a9f;
-  color: #FFFFFF;
-  border: none;
-  padding: 2px 4px;
-  border-radius: 4px;
-}
-
-
-.rbc-event:focus,
-.rbc-event:hover {
-  background-color: #505357;
-}
-
-
-.rbc-time-slot {
-  border-color: #444;
-}
-
-
-.rbc-date-cell {
-  color: #000000;
-}
-
-
-.rbc-timeslot-group {
-  border-color: #444;
-} */
-
-/* Calendar container */
 .rbc-calendar {
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white)); /* Dark mode text color */
   border-radius: 8px;
   padding: 20px;
-  /* transition: background-color 0.3s, color 0.3s; */
- 
 }
 
-/* Calendar header styles */
 .rbc-toolbar {
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
   padding: 10px;
   font-weight: bold;
-  /* transition: background-color 0.3s, color 0.3s; */
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 15px;
 }
 
-/* Calendar event styles */
 .rbc-event {
   background-color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-blue-7));
   color: light-dark(var(--mantine-color-white), var(--mantine-color-black)); /* Dynamic text color based on background */
@@ -75,41 +27,28 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Selected event style */
 .rbc-event:focus,
 .rbc-event:hover {
   background-color: light-dark(var(--mantine-color-dark-3), var(--mantine-color-dark-5));
   color: light-dark(var(--mantine-color-white), var(--mantine-color-black)); /* Adjust text color for better contrast */
 }
 
-/* Time slot styles */
 .rbc-time-slot {
   border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
   transition: border-color 0.3s;
 }
 
-/* Date labels (e.g., for month view) */
 .rbc-date-cell {
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
   font-weight: bold;
   transition: color 0.3s;
 }
 
-/* Grid lines */
 .rbc-timeslot-group {
   border-color: light-dark(var(--mantine-color-gray-5), var(--mantine-color-dark-4));
   transition: border-color 0.3s;
 }
 
-
-/* .rbc-btn-group {
-  display: flex;
-  justify-content: center;
-  margin: 10px;
-  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-} */
-
-/* Base button styles */
 .rbc-btn-group button {
   margin: 5px;
   padding: 5px 10px;
@@ -121,3 +60,33 @@
   transition: background-color 0.3s, color 0.3s, transform 0.1s;
 }
 
+/* Example for responsive calendar */
+@media (max-width: 768px) {
+  .rbc-agenda-view {
+    font-size: 14px; /* Smaller font for better readability */
+  }
+
+  .rbc-agenda-table {
+    width: 100%; /* Table spans the full width */
+  }
+
+  .rbc-agenda-view .rbc-agenda-header {
+    display: flex;
+    flex-wrap: wrap; /* Allow headers to stack on small screens */
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .rbc-agenda-view {
+    font-size: 12px; /* Further reduce font size */
+  }
+
+  .rbc-agenda-view .rbc-agenda-header {
+    flex-direction: column; /* Stack headers vertically */
+  }
+
+  .rbc-agenda-view .rbc-agenda-content {
+    overflow-x: auto; /* Add horizontal scrolling for smaller screens */
+  }
+}
